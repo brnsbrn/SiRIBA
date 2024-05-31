@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_usaha');
             $table->unsignedBigInteger('NIB')->unique();
             $table->string('nama');
+            $table->enum('jenis_badan_usaha', ['perseorangan', 'PT', 'CV']);
             $table->enum('skala_usaha', ['Mikro', 'Kecil', 'Menengah', 'Besar']);
             $table->enum('risiko', ['Rendah', 'Menengah Rendah', 'Menengah Tinggi', 'Tinggi']);
             $table->enum('jenis_proyek', ['Utama', 'Pendukung']);

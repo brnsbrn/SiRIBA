@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,12 +19,21 @@ class PelakuUsaha extends Model
         'nama',
         'jenis_badan_usaha',
         'skala_usaha',
-        'resiko_usaha',
+        'risiko',
         'tanggal_permohonan',
         'jenis_proyek',
         'email',
         'no_telp',
+        'id_kbli',
     ];
+
+    protected $dates = ['tanggal_permohonan'];
+
+    // Accessor untuk tanggal_permohonan
+    public function getTanggalPermohonanAttribute($value)
+    {
+        return Carbon::parse($value);
+    }
 
     public function alamat()
     {
