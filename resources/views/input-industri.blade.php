@@ -27,29 +27,24 @@
                     </div>
                     <form action="{{ route('data-industri.store') }}" method="POST">
                         @csrf
-                        {{-- Pelaku Usaha --}}
                         <div class="card-body">
                             <!-- Data Pelaku Usaha -->
-                            <!-- NIB -->
                             <div class="form-group">
                                 <label for="NIB">NIB</label>
                                 <input type="text" class="form-control" id="NIB" name="NIB" required>
                             </div>
-                            <!-- Nama -->
                             <div class="form-group">
                                 <label for="nama">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama" required>
                             </div>
-                            <!-- Jenis Badan Usaha -->
                             <div class="form-group">
                                 <label for="jenis_badan_usaha">Jenis Badan Usaha</label>
                                 <select class="form-control" id="jenis_badan_usaha" name="jenis_badan_usaha" required>
-                                    <option value="perseorangan">Perseorangan</option>
+                                    <option value="Perseorangan">Perseorangan</option>
                                     <option value="PT">PT</option>
                                     <option value="CV">CV</option>
                                 </select>
                             </div>
-                            <!-- Skala Usaha -->
                             <div class="form-group">
                                 <label for="skala_usaha">Skala Usaha</label>
                                 <select class="form-control" id="skala_usaha" name="skala_usaha" required>
@@ -59,7 +54,6 @@
                                     <option value="Besar">Besar</option>
                                 </select>
                             </div>
-                            <!-- Risiko -->
                             <div class="form-group">
                                 <label for="risiko">Risiko Usaha</label>
                                 <select class="form-control" id="risiko" name="risiko" required>
@@ -69,7 +63,6 @@
                                     <option value="Tinggi">Tinggi</option>
                                 </select>
                             </div>
-                            <!-- Jenis Proyek -->
                             <div class="form-group">
                                 <label for="jenis_proyek">Jenis Proyek</label>
                                 <select class="form-control" id="jenis_proyek" name="jenis_proyek" required>
@@ -77,38 +70,30 @@
                                     <option value="Pendukung">Pendukung</option>
                                 </select>
                             </div>
-                            <!-- Tanggal Permohonan -->
                             <div class="form-group">
                                 <label for="tanggal_permohonan">Tanggal Permohonan</label>
-                                <input type="date" class="form-control" id="tanggal_permohonan" name="tanggal_permohonan"
-                                    required>
+                                <input type="date" class="form-control" id="tanggal_permohonan" name="tanggal_permohonan" required>
                             </div>
-                            <!-- Email -->
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
-                            <!-- No. Telepon -->
                             <div class="form-group">
                                 <label for="no_telp">No. Telepon</label>
                                 <input type="text" class="form-control" id="no_telp" name="no_telp" required>
                             </div>
-                            <!-- KBLI -->
                             <div class="form-group">
                                 <label for="id_kbli">KBLI</label>
                                 <select class="form-control" id="id_kbli" name="id_kbli" required>
                                     @foreach ($kbli as $k)
-                                        <option value="{{ $k->id_kbli }}">{{ $k->id_kbli }} - {{ $k->jenis_kbli }}
-                                        </option>
+                                        <option value="{{ $k->id_kbli }}">{{ $k->id_kbli }} - {{ $k->jenis_kbli }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- Alamat Usaha -->
                             <div class="form-group">
                                 <label for="alamat_usaha">Alamat Usaha</label>
                                 <input type="text" class="form-control" id="alamat_usaha" name="alamat_usaha" required>
                             </div>
-                            <!-- Kecamatan -->
                             <div class="form-group">
                                 <label for="kecamatan">Kecamatan</label>
                                 <select class="form-control" id="kecamatan" name="kecamatan" required>
@@ -121,66 +106,51 @@
                                     <option value="Balikpapan Barat">Balikpapan Barat</option>
                                 </select>
                             </div>
-                            <!-- Kelurahan -->
                             <div class="form-group">
                                 <label for="kelurahan">Kelurahan</label>
                                 <select class="form-control" id="kelurahan" name="kelurahan" required>
-                                    <!-- Opsi ini akan diisi dengan JavaScript berdasarkan pilihan Kecamatan -->
                                     <option value="">Pilih Kelurahan</option>
                                 </select>
                             </div>
                         </div>
                 </div>
-                {{-- Tenaga Kerja --}}
+
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Input Data Tenaga Kerja</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Jumlah TKI Laki-laki -->
                         <div class="form-group">
                             <label for="jumlah_tki_laki_laki">Jumlah TKI Laki-laki</label>
-                            <input type="number" class="form-control" id="jumlah_tki_laki_laki"
-                                name="jumlah_tki_laki_laki" required>
+                            <input type="number" class="form-control" id="jumlah_tki_laki_laki" name="jumlah_tki_laki_laki" required>
                         </div>
-                        <!-- Jumlah TKI Perempuan -->
                         <div class="form-group">
                             <label for="jumlah_tki_perempuan">Jumlah TKI Perempuan</label>
-                            <input type="number" class="form-control" id="jumlah_tki_perempuan"
-                                name="jumlah_tki_perempuan" required>
+                            <input type="number" class="form-control" id="jumlah_tki_perempuan" name="jumlah_tki_perempuan" required>
                         </div>
-                        <!-- Jumlah Tenaga Kerja Asing -->
                         <div class="form-group">
                             <label for="jumlah_tenaga_kerja_asing">Jumlah Tenaga Kerja Asing</label>
-                            <input type="number" class="form-control" id="jumlah_tenaga_kerja_asing"
-                                name="jumlah_tenaga_kerja_asing" required>
+                            <input type="number" class="form-control" id="jumlah_tenaga_kerja_asing" name="jumlah_tenaga_kerja_asing" required>
                         </div>
                     </div>
                 </div>
 
-                {{-- Investasi --}}
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Input Data Investasi</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Modal Usaha -->
                         <div class="form-group">
                             <label for="modal_usaha">Modal Usaha</label>
-                            <input type="number" class="form-control" id="modal_usaha" name="modal_usaha"
-                                step="0.01" required>
+                            <input type="number" class="form-control" id="modal_usaha" name="modal_usaha" step="0.01" required>
                         </div>
-                        <!-- Investasi Mesin -->
                         <div class="form-group">
                             <label for="investasi_mesin">Investasi Mesin</label>
-                            <input type="number" class="form-control" id="investasi_mesin" name="investasi_mesin"
-                                step="0.01" required>
+                            <input type="number" class="form-control" id="investasi_mesin" name="investasi_mesin" step="0.01" required>
                         </div>
-                        <!-- Investasi Lainnya -->
                         <div class="form-group">
                             <label for="investasi_lainnya">Investasi Lainnya</label>
-                            <input type="number" class="form-control" id="investasi_lainnya" name="investasi_lainnya"
-                                step="0.01" required>
+                            <input type="number" class="form-control" id="investasi_lainnya" name="investasi_lainnya" step="0.01" required>
                         </div>
                     </div>
                 </div>
@@ -193,28 +163,35 @@
                         <div id="produk-container">
                             <div class="produk-item">
                                 <div class="form-group">
-                                    <label for="nama_produk">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk[]" required>
+                                    <label for="nama_produk[]">Nama Produk</label>
+                                    <input type="text" class="form-control" name="nama_produk[]" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kapasitas">Kapasitas</label>
-                                    <input type="number" class="form-control" id="kapasitas" name="kapasitas[]" required>
+                                    <label for="id_kbli_produk[]">KBLI</label>
+                                    <select class="form-control" name="id_kbli_produk[]" required>
+                                        @foreach ($kbli as $k)
+                                            <option value="{{ $k->id_kbli }}">{{ $k->id_kbli }} - {{ $k->jenis_kbli }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="satuan">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan[]" required>
+                                    <label for="kapasitas[]">Kapasitas</label>
+                                    <input type="number" class="form-control" name="kapasitas[]" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="satuan[]">Satuan</label>
+                                    <input type="text" class="form-control" name="satuan[]" required>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success" id="add-produk">Tambah Produk</button>
+                        <button type="button" id="add-produk" class="btn btn-success add-produk mt-1">Tambah Produk</button>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary ml-2">Submit</button>
+                    <button type="submit" class="btn btn-primary ml-2">Simpan</button>
                 </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -224,12 +201,12 @@
             var kecamatan = this.value;
             var kelurahanSelect = document.getElementById('kelurahan');
 
-            // Bersihkan opsi sebelum memuat yang baru
             kelurahanSelect.innerHTML = '';
 
-            // Tambahkan opsi kelurahan sesuai dengan kecamatan yang dipilih
+            var kelurahanOptions = [];
+
             if (kecamatan === 'Balikpapan Selatan') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Gunung Bahagia',
                     'Sepinggan',
                     'Damai Baru',
@@ -239,7 +216,7 @@
                     'Sepinggan Baru'
                 ];
             } else if (kecamatan === 'Balikpapan Kota') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Prapatan',
                     'Telaga Sari',
                     'Klandasan Ulu',
@@ -247,7 +224,7 @@
                     'Damai'
                 ];
             } else if (kecamatan === 'Balikpapan Barat') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Baru Tengah',
                     'Margasari',
                     'Margo Mulyo',
@@ -256,14 +233,14 @@
                     'Kariangau'
                 ];
             } else if (kecamatan === 'Balikpapan Timur') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Manggar',
                     'Manggar Baru',
                     'Lamaru',
                     'Teritip'
                 ];
             } else if (kecamatan === 'Balikpapan Utara') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Muara Rapak',
                     'Gunung Samarinda',
                     'Batu Ampar',
@@ -272,7 +249,7 @@
                     'Graha Indah'
                 ];
             } else if (kecamatan === 'Balikpapan Tengah') {
-                var kelurahanOptions = [
+                kelurahanOptions = [
                     'Gunung Sari Ilir',
                     'Gunung Sari Ulu',
                     'Mekar Sari',
@@ -281,7 +258,7 @@
                     'Karang Jati'
                 ];
             }
-            // Tambahkan opsi ke dalam select
+
             kelurahanOptions.forEach(function(kelurahan) {
                 var option = document.createElement('option');
                 option.value = kelurahan;
@@ -290,89 +267,48 @@
             });
         });
     </script>
-    {{-- <script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const kelurahanOptions = {
-                'Balikpapan Selatan': ['Gunung Bahagia', 'Sepinggan', 'Damai Baru', 'Damai Bahagia',
-                    'Sungai Nangka', 'Sepinggan Raya', 'Sepinggan Baru'
-                ],
-                'Balikpapan Kota': ['Prapatan', 'Telaga Sari', 'Klandasan Ulu', 'Klandasan Ilir', 'Damai'],
-                'Balikpapan Timur': ['Manggar', 'Manggar Baru', 'Lamaru', 'Teritip'],
-                'Balikpapan Utara': ['Muara Rapak', 'Gunung Samarinda', 'Batu Ampar', 'Karang Joang',
-                    'Gunung Samarinda Baru', 'Graha Indah'
-                ],
-                'Balikpapan Tengah': ['Gunung Sari Ilir', 'Gunung Sari Ulu', 'Mekar Sari', 'Karang Rejo',
-                    'Sumber Rejo', 'Karang Jati'
-                ],
-                'Balikpapan Barat': ['Baru Tengah', 'Margasari', 'Margo Mulyo', 'Baru Ulu', 'Baru Ilir',
-                    'Kariangau'
-                ]
-            };
+            document.getElementById('add-produk').addEventListener('click', function() {
+                const wrapper = document.getElementById('produk-container');
+                const item = document.createElement('div');
+                item.className = 'produk-item';
+                item.innerHTML = `
+                    <div class="form-group">
+                        <label for="nama_produk[]">Nama Produk</label>
+                        <input type="text" class="form-control" name="nama_produk[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_kbli_produk[]">KBLI</label>
+                        <select class="form-control" name="id_kbli_produk[]" required>
+                            @foreach ($kbli as $k)
+                                <option value="{{ $k->id_kbli }}">{{ $k->id_kbli }} - {{ $k->jenis_kbli }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kapasitas[]">Kapasitas</label>
+                        <input type="number" class="form-control" name="kapasitas[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="satuan[]">Satuan</label>
+                        <input type="text" class="form-control" name="satuan[]" required>
+                    </div>
+                    <button type="button" class="btn btn-danger remove-produk mb-1">Hapus Produk</button>
+                `;
+                wrapper.appendChild(item);
 
-            const kecamatanSelect = document.getElementById('kecamatan');
-            const kelurahanSelect = document.getElementById('kelurahan');
+                item.querySelector('.remove-produk').addEventListener('click', function() {
+                    item.remove();
+                });
+            });
 
-            kecamatanSelect.addEventListener('change', function() {
-                const selectedKecamatan = kecamatanSelect.value;
-                const kelurahanList = kelurahanOptions[selectedKecamatan] || [];
-
-                kelurahanSelect.innerHTML = '';
-                kelurahanList.forEach(function(kelurahan) {
-                    const option = document.createElement('option');
-                    option.value = kelurahan;
-                    option.text = kelurahan;
-                    kelurahanSelect.appendChild(option);
+            document.querySelectorAll('.remove-produk').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    this.closest('.produk-item').remove();
                 });
             });
         });
-    </script> --}}
-
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tambahProdukButton = document.getElementById('tambah-produk');
-            const kapasitasProduksiDiv = document.getElementById('kapasitas-produksi');
-            const kbliOptions = `{!! json_encode($kbli) !!}`;
-
-            tambahProdukButton.addEventListener('click', function() {
-                const newProdukDiv = document.createElement('div');
-                newProdukDiv.classList.add('produk');
-
-                newProdukDiv.innerHTML = `
-                <hr>
-                <!-- Nama Produk -->
-                <div class="form-group">
-                    <label for="nama_produk">Nama Produk</label>
-                    <input type="text" class="form-control" name="nama_produk[]" required>
-                </div>
-                <!-- Kapasitas -->
-                <div class="form-group">
-                    <label for="kapasitas">Kapasitas</label>
-                    <input type="number" class="form-control" name="kapasitas[]" required>
-                </div>
-                <!-- Satuan -->
-                <div class="form-group">
-                    <label for="satuan">Satuan</label>
-                    <input type="text" class="form-control" name="satuan[]" required>
-                </div>
-                <!-- KBLI -->
-                <div class="form-group">
-                    <label for="id_kbli">KBLI</label>
-                    <select class="form-control" name="id_kbli[]" required>
-                        ${kbliOptions}
-                    </select>
-                </div>
-                <button type="button" class="btn btn-danger hapus-produk">Hapus Produk</button>
-            `;
-
-                kapasitasProduksiDiv.appendChild(newProdukDiv);
-            });
-
-            kapasitasProduksiDiv.addEventListener('click', function(e) {
-                if (e.target && e.target.classList.contains('hapus-produk')) {
-                    e.target.parentNode.remove();
-                }
-            });
-        });
-    </script> --}}
+    </script>
 @endsection

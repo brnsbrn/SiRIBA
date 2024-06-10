@@ -18,6 +18,18 @@
 
     <section class="content">
         <div class="container-fluid">
+            <!-- Flash messages -->
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="row mb-2">
                 <div class="col-12">
                     <a href="{{ route('data-industri.input') }}" class="btn btn-primary">Tambah Data</a>

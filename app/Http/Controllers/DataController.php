@@ -46,10 +46,9 @@ class DataController extends Controller
             'modal_usaha' => 'required|numeric',
             'investasi_mesin' => 'required|numeric',
             'investasi_lainnya' => 'required|numeric',
-            'nama_produk' => 'required|string|max:255',
-            'kapasitas' => 'required|string|max:255',
-            'satuan' => 'required|string|max:255',
-            'id_kbli_produk' => 'required|string|max:255',
+            'nama_produk' => 'required|array',
+            'kapasitas' => 'required|array',
+            'satuan' => 'required|array',
         ]);
 
         // Simpan Data Pelaku Usaha
@@ -91,23 +90,15 @@ class DataController extends Controller
         ]);
 
         // Simpan Data Kapasitas Produksi
-        // foreach ($request->nama_produk as $index => $nama_produk) {
-        //     KapasitasProduksi::create([
-        //         'id_usaha' => $pelaku_usaha->id,
-        //         'nama_produk' => $nama_produk,
-        //         'kapasitas' => $request->kapasitas,
-        //         'satuan' => $request->satuan[$index],
-        //         'id_kbli' => $request->id_kbli[$index],
-        //     ]);
-        // }
-
-        KapasitasProduksi::create([
-            'id_usaha' => $pelaku_usaha->id_usaha,
-            'nama_produk' => $validated['nama_produk'],
-            'kapasitas' => $validated['kapasitas'],
-            'satuan' => $validated['satuan'],
-            'id_kbli' => $validated['id_kbli_produk'],
-        ]);
+        foreach ($request->nama_produk as $index => $nama_produk) {
+            KapasitasProduksi::create([
+                'id_usaha' => $pelaku_usaha->id_usaha,
+                'nama_produk' => $nama_produk,
+                'kapasitas' => $request->kapasitas[$index],
+                'satuan' => $request->satuan[$index],
+                'id_kbli' => $request->id_kbli,
+            ]);
+        }
 
         return redirect()->route('data-industri')->with('success', 'Data industri berhasil disimpan.');
     }
