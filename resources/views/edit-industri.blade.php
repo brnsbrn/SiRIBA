@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Input Data Industri</h1>
+                    <h1>Edit Data Industri</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -23,7 +23,7 @@
                 <!-- Card for Data Pelaku Usaha -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Input Data Pelaku Usaha</h3>
+                        <h3 class="card-title">Edit Data Pelaku Usaha</h3>
                     </div>
                     <form action="{{ route('data-industri.store') }}" method="POST">
                         @csrf

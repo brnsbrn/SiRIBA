@@ -46,9 +46,11 @@ class DataController extends Controller
             'modal_usaha' => 'required|numeric',
             'investasi_mesin' => 'required|numeric',
             'investasi_lainnya' => 'required|numeric',
-            'nama_produk' => 'required|array',
-            'kapasitas' => 'required|array',
-            'satuan' => 'required|array',
+            'kapasitas_produksi' => 'required|array',
+            'kapasitas_produksi.*.nama_produk' => 'required|string|max:255',
+            'kapasitas_produksi.*.kapasitas' => 'required|integer|min:0',
+            'kapasitas_produksi.*.satuan' => 'required|string|max:255',
+            'kapasitas_produksi.*.id_kbli' => 'required|exists:kbli,id_kbli'
         ]);
 
         // Simpan Data Pelaku Usaha
@@ -90,16 +92,29 @@ class DataController extends Controller
         ]);
 
         // Simpan Data Kapasitas Produksi
-        foreach ($request->nama_produk as $index => $nama_produk) {
+        foreach ($validated['kapasitas_produksi'] as $kapasitas) {
             KapasitasProduksi::create([
                 'id_usaha' => $pelaku_usaha->id_usaha,
-                'nama_produk' => $nama_produk,
-                'kapasitas' => $request->kapasitas[$index],
-                'satuan' => $request->satuan[$index],
-                'id_kbli' => $request->id_kbli,
+                'nama_produk' => $kapasitas['nama_produk'],
+                'kapasitas' => $kapasitas['kapasitas'],
+                'satuan' => $kapasitas['satuan'],
+                'id_kbli' => $kapasitas['id_kbli'],
             ]);
         }
 
         return redirect()->route('data-industri')->with('success', 'Data industri berhasil disimpan.');
+    }
+
+    public function destroyindustri($id) {
+        
+        // Menghapus data terkait
+        $pelakuUsaha = PelakuUsaha::findOrFail($id);
+        Alamat::where('id_usaha', $id)->delete();
+        TenagaKerja::where('id_usaha', $id)->delete();
+        Investasi::where('id_usaha', $id)->delete();
+        KapasitasProduksi::where('id_usaha', $id)->delete();
+        $pelakuUsaha->delete();
+
+        return redirect()->route('data-industri')->with('success', 'Data industri berhasil dihapus.');
     }
 }

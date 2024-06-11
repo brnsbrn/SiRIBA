@@ -82,7 +82,7 @@
                                             <td>{{ $usaha->alamat->kelurahan }}</td>
                                             <td>
                                                 <a href="" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="" method="POST" style="display: inline-block;">
+                                                <form action="{{ route('data-industri.destroy', $usaha->id_usaha) }}" method="POST" style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
