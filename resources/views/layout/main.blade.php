@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>@yield('title', 'AdminLTE 3 | Dashboard')</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     {{-- Bootstrap --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
@@ -115,7 +117,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('tenaga-kerja') }}" class="nav-link">
+                            <a href="{{ route('data-tenaker') }}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Tenaga Kerja
@@ -123,7 +125,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('investasi') }}" class="nav-link">
+                            <a href="{{ route('data-investasi') }}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Investasi
@@ -131,7 +133,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('kapasitas-produksi') }}" class="nav-link">
+                            <a href="{{ route('data-kapasitas-produksi') }}" class="nav-link">
                                 <i class="nav-icon fas fa-boxes"></i>
                                 <p>
                                     Kapasitas Produksi
@@ -139,7 +141,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('kbli') }}" class="nav-link">
+                            <a href="{{ route('data-kbli') }}" class="nav-link">
                                 <i class="nav-icon fas fa-code"></i>
                                 <p>
                                     KBLI
@@ -205,6 +207,8 @@
     <script src="{{ asset('lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('lte/dist/js/adminlte.js') }}"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('lte/dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

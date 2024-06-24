@@ -40,7 +40,7 @@ class PelakuUsaha extends Model
         return $this->hasOne('App\Models\Alamat', 'id_usaha');
     }
     
-    public function kbli()
+public function kbli()
     {
         return $this->belongsTo('App\Models\Kbli', 'id_kbli');
     }
