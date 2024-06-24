@@ -1,0 +1,264 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Alamat;
+use App\Models\Investasi;
+use App\Models\KapasitasProduksi;
+use App\Models\Kbli;
+use App\Models\PelakuUsaha;
+use App\Models\TenagaKerja;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+
+
+class DataController extends Controller
+{
+    public function index(Request $request)
+    {
+        $filter = $request->input('filter');
+        $keyword = $request->input('keyword');
+        $enumValue = $request->input('enum_value');
+
+        $query = PelakuUsaha::query();
+
+        if ($filter && ($keyword || $enumValue)) {
+            if ($filter === 'nama') {
+                $query->where('nama', 'like', '%' . $keyword . '%');
+            } elseif ($filter === 'nib') {
+                $query->where('NIB', 'like', '%' . $keyword . '%');
+            } elseif ($filter === 'id_kbli') {
+                $query->whereHas('kbli', function ($query) use ($keyword) {
+                    $query->where('jenis_kbli', 'like', '%' . $keyword . '%');
+                });
+            } elseif (in_array($filter, ['jenis_badan_usaha', 'skala_usaha', 'risiko', 'jenis_proyek'])) {
+                $query->where($filter, $enumValue);
+            } elseif ($filter === 'kecamatan') {
+                $query->whereHas('alamat', function ($query) use ($enumValue) {
+                    $query->where('kecamatan', $enumValue);
+                });
+            } elseif ($filter === 'kelurahan') {
+                $query->whereHas('alamat', function ($query) use ($enumValue) {
+                    $query->where('kelurahan', $enumValue);
+                });
+            }
+        }
+
+        $pelakuUsaha = $query->with(['kbli', 'alamat'])->get();
+
+        return view('data-industri', compact('pelakuUsaha'));
+    }
+
+    public function inputindustri()
+    {
+        $kbli = Kbli::all();
+        return view('input-industri', compact('kbli'));
+    }
+
+    public function storeindustri(Request $request)
+    {
+        $validated = $request->validate([
+            'NIB' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'jenis_badan_usaha' => 'required|string',
+            'skala_usaha' => 'required|string',
+            'risiko' => 'required|string',
+            'jenis_proyek' => 'required|string',
+            'tanggal_permohonan' => 'required|date',
+            'email' => 'required|email|max:255',
+            'no_telp' => 'required|string|max:20',
+            'id_kbli' => 'required|string|max:5',
+            'alamat_usaha' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kelurahan' => 'required|string|max:255',
+            'jumlah_tki_laki_laki' => 'required|integer',
+            'jumlah_tki_perempuan' => 'required|integer',
+            'jumlah_tenaga_kerja_asing' => 'required|integer',
+            'modal_usaha' => 'required|numeric',
+            'investasi_mesin' => 'required|numeric',
+            'investasi_lainnya' => 'required|numeric',
+            'nama_produk.*' => 'required|string|max:255',
+            'id_kbli_produk.*' => 'required|string|max:255',
+            'kapasitas.*' => 'required|string|max:255',
+            'satuan.*' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Simpan Data Pelaku Usaha
+            $pelaku_usaha = PelakuUsaha::create([
+                'NIB' => $validated['NIB'],
+                'nama' => $validated['nama'],
+                'jenis_badan_usaha' => $validated['jenis_badan_usaha'],
+                'skala_usaha' => $validated['skala_usaha'],
+                'risiko' => $validated['risiko'],
+                'jenis_proyek' => $validated['jenis_proyek'],
+                'tanggal_permohonan' => $validated['tanggal_permohonan'],
+                'email' => $validated['email'],
+                'no_telp' => $validated['no_telp'],
+                'id_kbli' => $validated['id_kbli'],
+            ]);
+
+            // Simpan Alamat
+            Alamat::create([
+                'id_usaha' => $pelaku_usaha->id_usaha,
+                'alamat_usaha' => $validated['alamat_usaha'],
+                'kecamatan' => $validated['kecamatan'],
+                'kelurahan' => $validated['kelurahan'],
+            ]);
+
+            // Simpan Tenaga Kerja
+            TenagaKerja::create([
+                'id_usaha' => $pelaku_usaha->id_usaha,
+                'jumlah_tki_laki_laki' => $validated['jumlah_tki_laki_laki'],
+                'jumlah_tki_perempuan' => $validated['jumlah_tki_perempuan'],
+                'jumlah_tenaga_kerja_asing' => $validated['jumlah_tenaga_kerja_asing'],
+            ]);
+
+            // Simpan Investasi
+            Investasi::create([
+                'id_usaha' => $pelaku_usaha->id_usaha,
+                'modal_usaha' => $validated['modal_usaha'],
+                'investasi_mesin' => $validated['investasi_mesin'],
+                'investasi_lainnya' => $validated['investasi_lainnya'],
+            ]);
+
+            // Simpan Data Produk
+            foreach ($validated['nama_produk'] as $index => $nama_produk) {
+                KapasitasProduksi::create([
+                    'id_usaha' => $pelaku_usaha->id_usaha,
+                    'id_kbli' => $validated['id_kbli_produk'][$index],
+                    'nama_produk' => $nama_produk,
+                    'kapasitas' => $validated['kapasitas'][$index],
+                    'satuan' => $validated['satuan'][$index],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('data-industri')->with('success', 'Data berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+        }
+    }
+
+    public function destroyindustri($id)
+    {
+        DB::beginTransaction();
+        try {
+            // Menghapus data terkait
+            $pelakuUsaha = PelakuUsaha::findOrFail($id);
+            Alamat::where('id_usaha', $id)->delete();
+            TenagaKerja::where('id_usaha', $id)->delete();
+            Investasi::where('id_usaha', $id)->delete();
+            KapasitasProduksi::where('id_usaha', $id)->delete();
+            $pelakuUsaha->delete();
+
+            DB::commit();
+
+            return redirect()->route('data-industri')->with('success', 'Data industri berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+        }
+    }
+
+    public function editindustri($id)
+    {
+        $kbli = Kbli::all();
+        $pelakuUsaha = PelakuUsaha::with(['kbli', 'alamat', 'investasi', 'tenagaKerja', 'kapasitasProduksi'])->findOrFail($id);
+        $produk = KapasitasProduksi::where('id_usaha', $id)->get();
+        $kecamatan = ['Balikpapan Selatan', 'Balikpapan Kota', 'Balikpapan Timur', 'Balikpapan Utara', 'Balikpapan Tengah', 'Balikpapan Barat']; 
+        return view('edit-industri', compact('kbli', 'pelakuUsaha', 'produk', 'kecamatan'));
+    }
+
+    public function updateindustri(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'NIB' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'jenis_badan_usaha' => 'required|string',
+            'skala_usaha' => 'required|string',
+            'risiko' => 'required|string',
+            'jenis_proyek' => 'required|string',
+            'tanggal_permohonan' => 'required|date',
+            'email' => 'required|email|max:255',
+            'no_telp' => 'required|string|max:20',
+            'id_kbli' => 'required|string|max:255',
+            'alamat_usaha' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kelurahan' => 'required|string|max:255',
+            'jumlah_tki_laki_laki' => 'required|integer',
+            'jumlah_tki_perempuan' => 'required|integer',
+            'jumlah_tenaga_kerja_asing' => 'required|integer',
+            'modal_usaha' => 'required|numeric|min:0|max:1000000000000',
+            'investasi_mesin' => 'required|numeric|min:0|max:1000000000000',
+            'investasi_lainnya' => 'required|numeric|min:0|max:1000000000000',
+            'id_kbli_produk.*' => 'required|string|max:255',
+            'nama_produk.*' => 'required|string|max:255',
+            'kapasitas.*' => 'required|string|max:255',
+            'satuan.*' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $pelakuUsaha = PelakuUsaha::findOrFail($id);
+
+            // Update Data Pelaku Usaha
+            $pelakuUsaha->update([
+                'NIB' => $validated['NIB'],
+                'nama' => $validated['nama'],
+                'jenis_badan_usaha' => $validated['jenis_badan_usaha'],
+                'skala_usaha' => $validated['skala_usaha'],
+                'risiko' => $validated['risiko'],
+                'jenis_proyek' => $validated['jenis_proyek'],
+                'tanggal_permohonan' => $validated['tanggal_permohonan'],
+                'email' => $validated['email'],
+                'no_telp' => $validated['no_telp'],
+                'id_kbli' => $validated['id_kbli'],
+            ]);
+
+            // Update Alamat
+            $pelakuUsaha->alamat->update([
+            'alamat_usaha' => $validated['alamat_usaha'],
+                'kecamatan' => $validated['kecamatan'],
+                'kelurahan' => $validated['kelurahan'],
+            ]);
+
+            // Update Tenaga Kerja
+            $pelakuUsaha->tenagaKerja->update([
+                'jumlah_tki_laki_laki' => $validated['jumlah_tki_laki_laki'],
+                'jumlah_tki_perempuan' => $validated['jumlah_tki_perempuan'],
+                'jumlah_tenaga_kerja_asing' => $validated['jumlah_tenaga_kerja_asing'],
+            ]);
+
+            // Update Investasi
+            $pelakuUsaha->investasi->update([
+                'modal_usaha' => $validated['modal_usaha'],
+                'investasi_mesin' => $validated['investasi_mesin'],
+                'investasi_lainnya' => $validated['investasi_lainnya'],
+            ]);
+
+            // Update Data Produk
+            KapasitasProduksi::where('id_usaha', $pelakuUsaha->id_usaha)->delete();
+            foreach ($validated['nama_produk'] as $index => $nama_produk) {
+                KapasitasProduksi::create([
+                    'id_usaha' => $pelakuUsaha->id_usaha,
+                    'id_kbli' => $validated['id_kbli_produk'][$index],
+                    'nama_produk' => $nama_produk,
+                    'kapasitas' => $validated['kapasitas'][$index],
+                    'satuan' => $validated['satuan'][$index],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('data-industri')->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+        }
+    }
+}

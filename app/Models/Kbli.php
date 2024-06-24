@@ -10,7 +10,9 @@ class Kbli extends Model
     use HasFactory;
     protected $table = 'kbli';
     protected $primaryKey = 'id_kbli';
-    protected $fillable = ['jenis_kbli'];
+    public $incrementing = false;
+    protected $keyType = 'string'; 
+    protected $fillable = ['id_kbli', 'jenis_kbli'];
     
     public function pelakuUsaha()
     {
