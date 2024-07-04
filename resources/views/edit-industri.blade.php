@@ -26,7 +26,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Edit Data Pelaku Usaha</h3>
                     </div>
-                    <form action="{{ route('data-industri.update', $pelakuUsaha->id_usaha) }}" method="post">
+                    <form action="{{ route('data-industri.update', $pelakuUsaha->id_usaha) }}" method="post"
+                        id="data-industri-update">
                         @csrf
                         @method('PUT')
                         {{-- Pelaku Usaha --}}
@@ -232,15 +233,17 @@
                                                     name="nama_produk[]" value="{{ $p->nama_produk }}" required>
                                             </div>
                                             <div class="form-group">
-                                            <label for="id_kbli_produk[]">KBLI</label>
-                                            <select class="form-control" id="id_kbli_produk[]" name="id_kbli_produk[]" required>
-                                                @foreach ($kbli as $k)
-                                                    <option value="{{ $p->id_kbli }}">{{ $k->id_kbli }} -
-                                                        {{ $k->jenis_kbli }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                                <label for="id_kbli_produk[]">KBLI</label>
+                                                <select class="form-control" id="id_kbli_produk[]"
+                                                    name="id_kbli_produk[]" required>
+                                                    @foreach ($kbli as $k)
+                                                        <option value="{{ $k->id_kbli }}"
+                                                            {{ $k->id_kbli == $p->id_kbli ? 'selected' : '' }}>
+                                                            {{ $k->id_kbli }} - {{ $k->jenis_kbli }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="kapasitas[]">Kapasitas</label>
                                                 <input type="number" class="form-control" id="kapasitas[]"
@@ -258,6 +261,7 @@
                                     Produk</button>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary ml-4">Edit</button>
                         </div>
@@ -374,6 +378,57 @@
                 if (e.target && e.target.classList.contains('remove-produk')) {
                     e.target.closest('.produk-item').remove();
                 }
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function() {
+                $('#data-industri-update').on('submit', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: "{{ route('data-industri.update', $pelakuUsaha->id_usaha) }}", // Update sesuai dengan route Anda
+                        type: "POST",
+                        data: $(this).serialize(),
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message,
+                                }).then(() => {
+                                    window.location.href =
+                                        "{{ url('/siriba/data-industri') }}";
+                                });
+                            } else if (response.status === 'error') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Kesalahan!',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                // Get the error message from the response
+                                var errors = xhr.responseJSON;
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Kesalahan!',
+                                    text: errors.message ||
+                                        'NIB sudah digunakan sebelumnya, periksa kembali NIB anda.',
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Kesalahan!',
+                                    text: 'Terjadi kesalahan saat menyimpan data.',
+                                });
+                            }
+                        }
+                    });
+                });
             });
         </script>
     @endsection

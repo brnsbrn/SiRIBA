@@ -86,6 +86,11 @@ class DataController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check if NIB already exists
+            if (PelakuUsaha::where('NIB', $validated['NIB'])->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'NIB ' . $validated['NIB'] . ' sudah ada sebelumnya.'], 400);
+            }
+            
             // Simpan Data Pelaku Usaha
             $pelaku_usaha = PelakuUsaha::create([
                 'NIB' => $validated['NIB'],
@@ -137,10 +142,10 @@ class DataController extends Controller
 
             DB::commit();
 
-            return redirect()->route('data-industri')->with('success', 'Data berhasil disimpan.');
+            return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()], 500);
         }
     }
 
@@ -158,10 +163,10 @@ class DataController extends Controller
 
             DB::commit();
 
-            return redirect()->route('data-industri')->with('success', 'Data industri berhasil dihapus.');
+            return back()->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
 
@@ -204,6 +209,17 @@ class DataController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check for duplicate id_kbli
+            $duplicateCheck = PelakuUsaha::where('NIB', $validated['NIB'])
+                                    ->where('id_usaha', '!=', $id)
+                                    ->exists();
+
+            if ($duplicateCheck) {
+                return response()->json([
+                    'error' => ' KBLI yang anda masukkan sudah ada sebelumnya.'
+                ], 422);
+            }
+
             $pelakuUsaha = PelakuUsaha::findOrFail($id);
 
             // Update Data Pelaku Usaha
@@ -255,10 +271,30 @@ class DataController extends Controller
 
             DB::commit();
 
-            return redirect()->route('data-industri')->with('success', 'Data berhasil diperbarui.');
+            return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('data-industri')->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat menyimpan data ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function hapusKapasitasProduksi(Request $request, $id_usaha, $id_kapasitas_produksi)
+    {
+        DB::beginTransaction();
+
+        try {
+            $kapasitasProduksi = KapasitasProduksi::where('id_usaha', $id_usaha)
+                ->findOrFail($id_kapasitas_produksi);
+
+            // Lakukan penghapusan
+            $kapasitasProduksi->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Kapasitas produksi berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menghapus kapasitas produksi. ' . $e->getMessage());
         }
     }
 }

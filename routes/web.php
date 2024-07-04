@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\InvestasiController;
 use App\Http\Controllers\KapasitasController;
@@ -11,6 +12,9 @@ use App\Models\TenagaKerja;
 
 // Login
 Route::get('/login', [LoginController::class, 'showlogin']);
+
+// Dashboard
+Route::get('/siriba/dashboard', [DashboardController::class, 'index'])->name('dashboard-industri');
 
 // Data Industri
 Route::get('/siriba/data-industri', [DataController::class, 'index'])->name('data-industri');

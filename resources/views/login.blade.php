@@ -5,7 +5,6 @@
 @section('auth_body')
     <form action="" method="post">
         @csrf
-
         <div class="input-group mb-3">
             <input type="text" name="username" class="form-control" value="" placeholder="{{ __('Username') }}" required autofocus>
             <div class="input-group-append">

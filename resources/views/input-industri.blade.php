@@ -25,7 +25,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Input Data Pelaku Usaha</h3>
                     </div>
-                    <form action="{{ route('data-industri.store') }}" method="post">
+                    <form action="{{ route('data-industri.store') }}" method="post" id="data-industri-form">
                         @csrf
                         {{-- Pelaku Usaha --}}
                         <div class="card-body">
@@ -224,13 +224,15 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary ml-4">Submit</button>
+                            <button type="submit" class="btn btn-primary ml-4">Simpan   </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.getElementById('kecamatan').addEventListener('change', function() {
                 var kecamatan = this.value;
@@ -302,91 +304,46 @@
                 });
             });
         </script>
-        {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const kelurahanOptions = {
-                'Balikpapan Selatan': ['Gunung Bahagia', 'Sepinggan', 'Damai Baru', 'Damai Bahagia',
-                    'Sungai Nangka', 'Sepinggan Raya', 'Sepinggan Baru'
-                ],
-                'Balikpapan Kota': ['Prapatan', 'Telaga Sari', 'Klandasan Ulu', 'Klandasan Ilir', 'Damai'],
-                'Balikpapan Timur': ['Manggar', 'Manggar Baru', 'Lamaru', 'Teritip'],
-                'Balikpapan Utara': ['Muara Rapak', 'Gunung Samarinda', 'Batu Ampar', 'Karang Joang',
-                    'Gunung Samarinda Baru', 'Graha Indah'
-                ],
-                'Balikpapan Tengah': ['Gunung Sari Ilir', 'Gunung Sari Ulu', 'Mekar Sari', 'Karang Rejo',
-                    'Sumber Rejo', 'Karang Jati'
-                ],
-                'Balikpapan Barat': ['Baru Tengah', 'Margasari', 'Margo Mulyo', 'Baru Ulu', 'Baru Ilir',
-                    'Kariangau'
-                ]
-            };
 
-            const kecamatanSelect = document.getElementById('kecamatan');
-            const kelurahanSelect = document.getElementById('kelurahan');
-
-            kecamatanSelect.addEventListener('change', function() {
-                const selectedKecamatan = kecamatanSelect.value;
-                const kelurahanList = kelurahanOptions[selectedKecamatan] || [];
-
-                kelurahanSelect.innerHTML = '';
-                kelurahanList.forEach(function(kelurahan) {
-                    const option = document.createElement('option');
-                    option.value = kelurahan;
-                    option.text = kelurahan;
-                    kelurahanSelect.appendChild(option);
+        <script>
+            $(document).ready(function() {
+                $('#data-industri-form').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "{{ route('data-industri.store') }}",
+                        method: "POST",
+                        data: $(this).serialize(),
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: response.message,
+                                }).then(function() {
+                                    window.location.href = "{{ url('/siriba/data-industri') }}";
+                                });
+                            }
+                        },
+                        error: function(response) {
+                            if (response.status === 400) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.responseJSON.message,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat mengirim data.',
+                                });
+                            }
+                        }
+                    });
                 });
             });
-        });
-    </script> --}}
+        </script>
 
-
-        {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tambahProdukButton = document.getElementById('tambah-produk');
-            const kapasitasProduksiDiv = document.getElementById('kapasitas-produksi');
-            const kbliOptions = `{!! json_encode($kbli) !!}`;
-
-            tambahProdukButton.addEventListener('click', function() {
-                const newProdukDiv = document.createElement('div');
-                newProdukDiv.classList.add('produk');
-
-                newProdukDiv.innerHTML = `
-                <hr>
-                <!-- Nama Produk -->
-                <div class="form-group">
-                    <label for="nama_produk">Nama Produk</label>
-                    <input type="text" class="form-control" name="nama_produk[]" required>
-                </div>
-                <!-- Kapasitas -->
-                <div class="form-group">
-                    <label for="kapasitas">Kapasitas</label>
-                    <input type="number" class="form-control" name="kapasitas[]" required>
-                </div>
-                <!-- Satuan -->
-                <div class="form-group">
-                    <label for="satuan">Satuan</label>
-                    <input type="text" class="form-control" name="satuan[]" required>
-                </div>
-                <!-- KBLI -->
-                <div class="form-group">
-                    <label for="id_kbli">KBLI</label>
-                    <select class="form-control" name="id_kbli[]" required>
-                        ${kbliOptions}
-                    </select>
-                </div>
-                <button type="button" class="btn btn-danger hapus-produk">Hapus Produk</button>
-            `;
-
-                kapasitasProduksiDiv.appendChild(newProdukDiv);
-            });
-
-            kapasitasProduksiDiv.addEventListener('click', function(e) {
-                if (e.target && e.target.classList.contains('hapus-produk')) {
-                    e.target.parentNode.remove();
-                }
-            });
-        });
-    </script> --}}
         <script>
             document.getElementById('add-produk').addEventListener('click', function() {
                 var produkContainer = document.getElementById('produk-container');

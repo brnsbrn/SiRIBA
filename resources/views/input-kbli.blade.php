@@ -32,7 +32,8 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="id_kbli[]">ID KBLI</label>
-                                            <input type="number" class="form-control" name="id_kbli[]" max="99999" title="ID KBLI harus terdiri dari maksimal 5 digit angka." required>
+                                            <input type="number" class="form-control" name="id_kbli[]" max="99999"
+                                                title="ID KBLI harus terdiri dari maksimal 5 digit angka." required>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -42,7 +43,8 @@
                                         </div>
                                     </div>
                                     <div class="col mb-3 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger btn-sm remove-row" onclick="removeKbliRow(this)">Hapus</button>
+                                        <button type="button" class="btn btn-danger btn-sm remove-row"
+                                            onclick="removeKbliRow(this)">Hapus</button>
                                     </div>
                                 </div>
                             </div>
@@ -58,97 +60,46 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
-        document.getElementById('add-row').addEventListener('click', function() {
-            var container = document.getElementById('kbli-input-container');
-            var row = document.createElement('div');
-            row.className = 'row kbli-input-row';
-            row.innerHTML = `
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="id_kbli[]">ID KBLI</label>
-                        <input type="number" class="form-control" name="id_kbli[]" max="99999" title="ID KBLI harus terdiri dari maksimal 5 digit angka." required>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <label for="jenis_kbli[]">Jenis KBLI</label>
-                        <input type="text" class="form-control" name="jenis_kbli[]" required>
-                    </div>
-                </div>
-                <div class="col mb-3 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger btn-sm remove-row" onclick="removeKbliRow(this)">Hapus</button>
-                </div>
-            `;
-            container.appendChild(row);
-        });
-
-        function removeKbliRow(button) {
-            var row = button.closest('.kbli-input-row');
-            row.remove();
-        }
-
-        document.getElementById('kbli-form').addEventListener('submit', function(event) {
+        document.getElementById('input-form').addEventListener('submit', function(event) {
             event.preventDefault();
             var form = this;
-            var isValid = true;
-            var errorMessage = '';
-
-            // Validasi setiap ID KBLI
-            document.querySelectorAll('input[name="id_kbli[]"]').forEach(function(input) {
-                if (input.value.length !== 5) {
-                    isValid = false;
-                    errorMessage = 'ID KBLI harus 5 digit.';
-                }
-            });
-
-            if (!isValid) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: errorMessage,
-                });
-                return;
-            }
-
             var formData = new FormData(form);
 
-            fetch('{{ route('data-kbli.store') }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
+            fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.error,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.success,
+                        }).then(() => {
+                            window.location.href = "{{ route('data-industri') }}";
+                        });
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: data.error,
+                        text: 'Terjadi kesalahan saat menyimpan data.',
                     });
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: data.success,
-                    }).then(() => {
-                        window.location.href = "{{ route('data-kbli') }}";
-                    });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Terjadi kesalahan saat menyimpan data.',
                 });
-            });
         });
-
-        
     </script>
 @endsection
