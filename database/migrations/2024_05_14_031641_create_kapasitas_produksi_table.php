@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->integer('kapasitas');
             $table->string('satuan');
-            $table->unsignedBigInteger('id_kbli');
+            $table->string('id_kbli', 5);
             $table->foreign('id_usaha')->references('id_usaha')->on('pelaku_usaha')->onDelete('cascade');
             $table->foreign('id_kbli')->references('id_kbli')->on('kbli')->onDelete('cascade');
             $table->timestamps();

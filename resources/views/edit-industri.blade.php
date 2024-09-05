@@ -109,7 +109,7 @@
                             <!-- Email -->
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" i d="email" name="email"
+                                <input type="text" class="form-control" i d="email" name="email"
                                     value="{{ $pelakuUsaha->email }}" required>
                             </div>
                             <!-- No. Telepon -->

@@ -30,20 +30,20 @@
                         {{-- Pelaku Usaha --}}
                         <div class="card-body">
                             <!-- Data Pelaku Usaha -->
-                            <!-- NIB -->
-                            <div class="form-group">
-                                <label for="NIB">NIB</label>
-                                <input type="text" class="form-control" id="NIB" name="NIB" required>
-                            </div>
                             <!-- Nama -->
                             <div class="form-group">
                                 <label for="nama">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama" required>
                             </div>
+                            <!-- NIB -->
+                            <div class="form-group">
+                                <label for="NIB">NIB</label>
+                                <input type="text" class="form-control" id="NIB" name="NIB" required>
+                            </div>
                             <!-- Jenis Badan Usaha -->
                             <div class="form-group">
                                 <label for="jenis_badan_usaha">Jenis Badan Usaha</label>
-                                <select class="form-control" id="jenis_badan_usaha" name="jenis_badan_usaha" required>
+                                <select class="form-control" id="jenis_badan_usaha" id="jenis_badan_usaha" name="jenis_badan_usaha" required>
                                     <option value="perseorangan">Perseorangan</option>
                                     <option value="PT">PT</option>
                                     <option value="CV">CV</option>
@@ -86,7 +86,7 @@
                             <!-- Email -->
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="text" class="form-control" id="email" name="email" required>
                             </div>
                             <!-- No. Telepon -->
                             <div class="form-group">

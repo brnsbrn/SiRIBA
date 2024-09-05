@@ -86,15 +86,15 @@ class DataController extends Controller
 
         DB::beginTransaction();
         try {
-            // Check if NIB already exists
+            // Mengecek apakah NIB sudah ada
             if (PelakuUsaha::where('NIB', $validated['NIB'])->exists()) {
                 return response()->json(['status' => 'error', 'message' => 'NIB ' . $validated['NIB'] . ' sudah ada sebelumnya.'], 400);
             }
             
             // Simpan Data Pelaku Usaha
             $pelaku_usaha = PelakuUsaha::create([
-                'NIB' => $validated['NIB'],
                 'nama' => $validated['nama'],
+                'NIB' => $validated['NIB'],
                 'jenis_badan_usaha' => $validated['jenis_badan_usaha'],
                 'skala_usaha' => $validated['skala_usaha'],
                 'risiko' => $validated['risiko'],

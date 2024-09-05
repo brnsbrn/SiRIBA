@@ -20,9 +20,9 @@ return new class extends Migration
             $table->enum('risiko', ['Rendah', 'Menengah Rendah', 'Menengah Tinggi', 'Tinggi']);
             $table->enum('jenis_proyek', ['Utama', 'Pendukung']);
             $table->date('tanggal_permohonan');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('no_telp');
-            $table->unsignedBigInteger('id_kbli');
+            $table->string('id_kbli', 5);
             $table->foreign('id_kbli')->references('id_kbli')->on('kbli')->onDelete('cascade');
             $table->timestamps();
         });

@@ -18,18 +18,4 @@ class Investasi extends Model
         return $this->belongsTo('App\Models\PelakuUsaha', 'id_usaha');
     }
 
-    // public function getModalUsahaAttribute($value)
-    // {
-    //     return 'Rp ' . number_format($value, 2, ',', '.');
-    // }
-
-    // public function getInvestasiMesinAttribute($value)
-    // {
-    //     return 'Rp ' . number_format($value, 2, ',', '.');
-    // }
-
-    // public function getInvestasiLainnyaAttribute($value)
-    // {
-    //     return 'Rp ' . number_format($value, 2, ',', '.');
-    // }
 }
