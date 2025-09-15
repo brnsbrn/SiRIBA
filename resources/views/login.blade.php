@@ -3,10 +3,19 @@
 @section('auth_header', __('Sistem Informasi Industri Balikpapan'))
 
 @section('auth_body')
-    <form action="" method="post">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <>{{ $error }}</>
+                @endforeach
+        </div>
+    @endif
+
+    <form action="{{ url('/siiba/login') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" name="username" class="form-control" value="" placeholder="{{ __('Username') }}" required autofocus>
+            <input type="text" name="username" class="form-control" value="" placeholder="{{ __('Email') }}" required
+                autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-user"></span>
@@ -15,7 +24,8 @@
         </div>
 
         <div class="input-group mb-3">
-            <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password') }}" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password') }}"
+                required>
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>
@@ -50,7 +60,7 @@
 
 @section('js')
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function (e) {
+        document.getElementById('togglePassword').addEventListener('click', function(e) {
             const passwordInput = document.getElementById('password');
             const passwordIcon = this.querySelector('.fas');
 

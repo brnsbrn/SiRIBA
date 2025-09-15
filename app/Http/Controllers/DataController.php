@@ -66,8 +66,8 @@ class DataController extends Controller
             'risiko' => 'required|string',
             'jenis_proyek' => 'required|string',
             'tanggal_permohonan' => 'required|date',
-            'email' => 'required|email|max:255',
-            'no_telp' => 'required|string|max:20',
+            'email' => 'nullable', 'regex:/^[-a-zA-Z0-9_.+@]+$/',
+            'no_telp' => 'nullable', 'regex:/^[-0-9+\s()]+$/',
             'id_kbli' => 'required|string|max:5',
             'alamat_usaha' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:255',
@@ -82,13 +82,23 @@ class DataController extends Controller
             'id_kbli_produk.*' => 'required|string|max:255',
             'kapasitas.*' => 'required|string|max:255',
             'satuan.*' => 'required|string|max:255',
+            'status_siinas.*' => 'required|string|max:255',
+            'tanggal_registrasi_siinas.*' => 'required|date',
         ]);
+
+        $email = ($validated['email'] === '-' || $validated['email'] === null) ? null : $validated['email'];
+        $no_telp = ($validated['no_telp'] === '-' || $validated['no_telp'] === null) ? null : $validated['no_telp'];
 
         DB::beginTransaction();
         try {
             // Mengecek apakah NIB sudah ada
-            if (PelakuUsaha::where('NIB', $validated['NIB'])->exists()) {
-                return response()->json(['status' => 'error', 'message' => 'NIB ' . $validated['NIB'] . ' sudah ada sebelumnya.'], 400);
+            // if (PelakuUsaha::where('NIB', $validated['NIB'])->exists()) {
+            //     return response()->json(['status' => 'error', 'message' => 'NIB ' . $validated['NIB'] . ' sudah ada sebelumnya.'], 400);
+            // }
+            
+            // Mengecek nib dan kbli sudah ada ato belom secara manual
+            if (PelakuUsaha::where('NIB', $validated['NIB'])->where('id_kbli', $validated['id_kbli'])->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'NIB dan KBLI yang sama sudah ada.'], 400);
             }
             
             // Simpan Data Pelaku Usaha
@@ -100,8 +110,8 @@ class DataController extends Controller
                 'risiko' => $validated['risiko'],
                 'jenis_proyek' => $validated['jenis_proyek'],
                 'tanggal_permohonan' => $validated['tanggal_permohonan'],
-                'email' => $validated['email'],
-                'no_telp' => $validated['no_telp'],
+                'email' => $email,
+                'no_telp' => $no_telp,
                 'id_kbli' => $validated['id_kbli'],
             ]);
 
@@ -137,6 +147,8 @@ class DataController extends Controller
                     'nama_produk' => $nama_produk,
                     'kapasitas' => $validated['kapasitas'][$index],
                     'satuan' => $validated['satuan'][$index],
+                    'status_siinas' => $validated['status_siinas'][$index],
+                    'tanggal_registrasi_siinas' => $validated['tanggal_registrasi_siinas'][$index],
                 ]);
             }
 
@@ -189,8 +201,8 @@ class DataController extends Controller
             'risiko' => 'required|string',
             'jenis_proyek' => 'required|string',
             'tanggal_permohonan' => 'required|date',
-            'email' => 'required|email|max:255',
-            'no_telp' => 'required|string|max:20',
+            'email' => ['nullable', 'regex:/^[-a-zA-Z0-9_.+@]+$/'],
+            'no_telp' => ['nullable', 'regex:/^[-0-9+\s()]+$/'],
             'id_kbli' => 'required|string|max:255',
             'alamat_usaha' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:255',
@@ -205,7 +217,13 @@ class DataController extends Controller
             'nama_produk.*' => 'required|string|max:255',
             'kapasitas.*' => 'required|string|max:255',
             'satuan.*' => 'required|string|max:255',
+            'status_siinas.*' => 'required|string|max:255',
+            'tanggal_registrasi_siinas.*' => 'required|date',
         ]);
+
+        // Bersihkan input email dan no_telp jika diisi "-"
+        $email = ($validated['email'] === '-' || $validated['email'] === null) ? null : $validated['email'];
+        $no_telp = ($validated['no_telp'] === '-' || $validated['no_telp'] === null) ? null : $validated['no_telp'];
 
         DB::beginTransaction();
         try {
@@ -231,8 +249,8 @@ class DataController extends Controller
                 'risiko' => $validated['risiko'],
                 'jenis_proyek' => $validated['jenis_proyek'],
                 'tanggal_permohonan' => $validated['tanggal_permohonan'],
-                'email' => $validated['email'],
-                'no_telp' => $validated['no_telp'],
+                'email' => $email,
+                'no_telp' => $no_telp,
                 'id_kbli' => $validated['id_kbli'],
             ]);
 
@@ -266,6 +284,8 @@ class DataController extends Controller
                     'nama_produk' => $nama_produk,
                     'kapasitas' => $validated['kapasitas'][$index],
                     'satuan' => $validated['satuan'][$index],
+                    'status_siinas' => $validated['status_siinas'][$index],
+                    'tanggal_registrasi_siinas' => $validated['tanggal_registrasi_siinas'][$index],
                 ]);
             }
 

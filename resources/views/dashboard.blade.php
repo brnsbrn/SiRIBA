@@ -1,6 +1,25 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Data KBLI')
+@section('title', 'SIIBA | Data KBLI')
+
+@section('css')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <style>
+        #mapKelurahan {
+            height: 600px;
+        }
+        #mapKecamatan {
+            height: 600px;
+        }
+        .leaflet-popup-content {
+            color: #191919;
+            font-Weight: bold;
+            font-Size:8;
+        }
+    </style>
+@endsection
 
 @section('content')
     <section class="content-header">
@@ -83,7 +102,6 @@
                     <h5>Jumlah Pelaku Usaha Berdasarkan Risiko</h5>
                 </div>
                 <div class="row">
-                    <!-- New Infoboxes for Risk -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box">
                             <span class="info-box-icon bg-success elevation-1"><i
@@ -179,6 +197,97 @@
                                 <span class="info-box-text">CV</span>
                                 <span class="info-box-number">
                                     {{ $cv }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-user-tie"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">PT Perseorangan</span>
+                                <span class="info-box-number">
+                                    {{ $ptPerseorangan }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-balance-scale"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Badan Hukum Lainnya</span>
+                                <span class="info-box-number">
+                                    {{ $bhl }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-warehouse"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Badan Layanan Umum</span>
+                                <span class="info-box-number">
+                                    {{ $blu }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-store"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Koperasi</span>
+                                <span class="info-box-number">
+                                    {{ $koperasi }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-users"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Persatuan dan Perkumpulan</span>
+                                <span class="info-box-number">
+                                    {{ $pdp }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-toolbox"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Perusahaan Umum</span>
+                                <span class="info-box-number">
+                                    {{ $perum }}
+                                    <small>Pelaku Usaha</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-light elevation-1"><i class="fas fa-school"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Yayasan</span>
+                                <span class="info-box-number">
+                                    {{ $yayasan }}
                                     <small>Pelaku Usaha</small>
                                 </span>
                             </div>
@@ -293,6 +402,44 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Peta Sebaran Industri per Kelurahan</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="mapKelurahan"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Peta Sebaran Industri per Kecamatan</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="mapKecamatan"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Informasi Pertumbuhan Industri</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -377,7 +524,7 @@
                     data: tenagaKerjaChartData.map(item => item.total_pr),
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
                 }
             ];
 
@@ -386,7 +533,7 @@
                 type: 'bar',
                 data: {
                     labels: tenagaKerjaLabels,
-                    datasets: tenagaKerjaDatasets
+                    datasets: tenagaKerjaDatasets,
                 },
                 options: {
                     responsive: true,
@@ -401,7 +548,7 @@
                 }
             });
 
-            // Chart 3: Jumlah Pelaku Usaha Berdasarkan Risiko di Tiap Kecamatan
+            // Chart 3: Persebaran Risiko Pelaku Usaha di Tiap Kecamatan
             var riskLabels = kecamatan;
             var riskDatasets = [];
 
@@ -449,6 +596,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Piechart 4: Total Investasi Berdasarkan Skala Usaha
             var totalInvestasi = @json($totalInvestasi);
 
             var labels = Object.keys(totalInvestasi);
@@ -466,7 +614,7 @@
                             'rgba(33, 156, 144, 0.6)',
                             'rgba(255, 244, 85, 0.6)',
                             'rgba(255, 199, 0, 0.6)',
-                            'rgbaa(231, 233, 237, 0.5)'
+                            'rgba(231, 233, 237, 0.5)'
                         ],
                         borderColor: [
                             'rgb(33, 156, 144)',
@@ -482,7 +630,7 @@
                 }
             });
 
-            // Data dari controller untuk Pie Chart Jenis Usaha
+            // Piechart 5: Total Investsi Berdasarkan Jenis Usaha
             var totalInvestmentsByType = @json($totalInvestmentsByType);
             var businessTypeLabels = Object.keys(totalInvestmentsByType);
             var businessTypeData = Object.values(totalInvestmentsByType);
@@ -516,4 +664,278 @@
             });
         });
     </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    
+    <!-- Peta Sebaran Industri per Kelurahan -->
+    <script>
+        const mapkel = L.map('mapKelurahan').setView([-1.2654, 116.8312], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap'
+        }).addTo(mapkel);
+
+        setTimeout(() => {
+            mapkel.invalidateSize();
+        }, 100);
+
+        let jumlahIndustriKel = {};
+
+        // Ambil jumlah industri per kelurahan dari API
+        fetch('/api/industri-kelurahan')
+            .then(res => res.json())
+            .then(data => {
+                // Simpan jumlah industri dengan nama kelurahan lowercase
+                data.forEach(item => {
+                    jumlahIndustriKel[item.kelurahan.toLowerCase()] = item;
+                });
+
+                // Load GeoJSON batas wilayah
+                fetch('/Batas_Wilayah_Kelurahan_Kota_Balikpapan.geojson')
+                    .then(res => res.json())
+                    .then(geojson => {
+                        L.geoJSON(geojson, {
+                            style: function(feature) {
+                                return {
+                                    color: '#3388ff',
+                                    weight: 0,
+                                    fillOpacity: 0.1
+                                };
+                            },
+                            onEachFeature: function(feature, layer) {
+                                const nama = feature.properties.DESA_KEL || 'Tidak diketahui';
+                                const dataKel = jumlahIndustriKel[nama.toLowerCase()] || {
+                                    total_usaha: 0, mikro: 0, kecil: 0, menengah: 0, besar: 0,
+                                    risiko_rendah: 0, risiko_menengah_rendah: 0, risiko_menengah_tinggi: 0, risiko_tinggi: 0,
+                                    tenaga_laki: 0, tenaga_perempuan: 0, tenaga_asing: 0
+                                };
+
+                                // Tambahkan marker di tengah polygon
+                                if (layer.getBounds && dataKel.total_usaha > 0) {
+                                    const center = layer.getBounds().getCenter();
+                                    L.marker(center)
+                                        .addTo(mapkel)
+                                        .bindPopup(`
+                                            <b>${nama}</b><br>
+                                            Jumlah Unit Usaha: ${dataKel.total_usaha}
+                                            <br><br>
+
+                                            <b>Skala Usaha</b>
+                                            <ul>
+                                                <li>Mikro: ${dataKel.mikro}</li>
+                                                <li>Kecil: ${dataKel.kecil}</li>
+                                                <li>Menengah: ${dataKel.menengah}</li>
+                                                <li>Besar: ${dataKel.besar}</li>
+                                            </ul>
+
+                                            <b>Risiko Usaha</b>
+                                            <ul>
+                                                <li>Rendah: ${dataKel.risiko_rendah}</li>
+                                                <li>Menengah Rendah: ${dataKel.risiko_menengah_rendah}</li>
+                                                <li>Menengah Tinggi: ${dataKel.risiko_menengah_tinggi}</li>
+                                                <li>Tinggi: ${dataKel.risiko_tinggi}</li>
+                                            </ul>
+
+                                            <b>Tenaga Kerja</b>
+                                            <ul>
+                                                <li>Laki-laki: ${dataKel.tenaga_laki}</li>
+                                                <li>Perempuan: ${dataKel.tenaga_perempuan}</li>
+                                                <li>Asing: ${dataKel.tenaga_asing}</li>
+                                            </ul>
+                                        `);
+                                }
+                            }
+                        }).addTo(mapkel);
+                    });
+            });
+
+        const mapkec = L.map('mapKecamatan').setView([-1.2654, 116.8312], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap'
+        }).addTo(mapkec);
+
+        setTimeout(() => {
+            mapkec.invalidateSize();
+        }, 100);
+
+            let jumlahIndustriKec = {};
+        // Ambil jumlah industri per kelurahan dari API
+        fetch('/api/industri-kecamatan')
+            .then(res => res.json())
+            .then(data => {
+                // Simpan jumlah industri dengan nama kelurahan lowercase
+                data.forEach(item => {
+                    jumlahIndustriKec[item.kecamatan.toLowerCase()] = item;
+                });
+
+                // Load GeoJSON batas wilayah
+                fetch('/Batas_Wilayah_Kecamatan_Kota_Balikpapan.geojson')
+                    .then(res => res.json())
+                    .then(geojson => {
+                        L.geoJSON(geojson, {
+                            style: function(feature) {
+                                return {
+                                    color: '#3388ff',
+                                    weight: 0,
+                                    fillOpacity: 0.1
+                                };
+                            },
+                            onEachFeature: function(feature, layer) {
+                                const nama = feature.properties.KEC_ || 'Tidak diketahui';
+                                const dataKec = jumlahIndustriKec[nama.toLowerCase()] || {
+                                    total_usaha: 0, mikro: 0, kecil: 0, menengah: 0, besar: 0,
+                                    risiko_rendah: 0, risiko_menengah_rendah: 0, risiko_menengah_tinggi: 0, risiko_tinggi: 0,
+                                    tenaga_laki: 0, tenaga_perempuan: 0, tenaga_asing: 0
+                                };
+
+                                // Tambahkan marker di tengah polygon
+                                if (layer.getBounds && dataKec.total_usaha > 0) {
+                                    const center = layer.getBounds().getCenter();
+                                    L.marker(center)
+                                        .addTo(mapkec)
+                                        .bindPopup(`
+                                            <b>${nama}</b><br>
+                                            Jumlah Unit Usaha: ${dataKec.total_usaha}
+                                            <br><br>
+
+                                            <b>Skala Usaha</b>
+                                            <ul>
+                                                <li>Mikro: ${dataKec.mikro}</li>
+                                                <li>Kecil: ${dataKec.kecil}</li>
+                                                <li>Menengah: ${dataKec.menengah}</li>
+                                                <li>Besar: ${dataKec.besar}</li>
+                                            </ul>
+
+                                            <b>Risiko Usaha</b>
+                                            <ul>
+                                                <li>Rendah: ${dataKec.risiko_rendah}</li>
+                                                <li>Menengah Rendah: ${dataKec.risiko_menengah_rendah}</li>
+                                                <li>Menengah Tinggi: ${dataKec.risiko_menengah_tinggi}</li>
+                                                <li>Tinggi: ${dataKec.risiko_tinggi}</li>
+                                            </ul>
+
+                                            <b>Tenaga Kerja</b>
+                                            <ul>
+                                                <li>Laki-laki: ${dataKec.tenaga_laki}</li>
+                                                <li>Perempuan: ${dataKec.tenaga_perempuan}</li>
+                                                <li>Asing: ${dataKec.tenaga_asing}</li>
+                                            </ul>
+                                        `);
+                                }
+                            }
+                        }).addTo(mapkec);
+                    });
+            });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var triwulanData = @json($triwulanData);
+        var tahunanData = @json($tahunanData);
+
+        console.log("Triwulan Data:", triwulanData); // cek isi datanya di console browser
+        console.log("Tahunan Data:", tahunanData);
+
+        if (!triwulanData || triwulanData.length === 0) {
+            // Kalau data kosong, tampilkan teks pengganti
+            var ctx = document.getElementById('lineChart').getContext('2d');
+            ctx.font = "16px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Data tidak tersedia", ctx.canvas.width / 2, ctx.canvas.height / 2);
+            return;
+        }
+
+        // Labels: gabungan Q + Tahun
+        var labels = [...new Set(triwulanData.map(item => `Q${item.triwulan} - ${item.tahun}`))];
+
+        // Urutan skala usaha yang diinginkan
+        var skalaUrut = ['Mikro', 'Kecil', 'Menengah', 'Besar'];
+        
+        // Ambil daftar skala usaha unik
+        var skalaList = skalaUrut.filter(s => triwulanData.some(item => item.skala_usaha === s));
+
+        // Warna untuk tiap skala usaha
+        var colors = ['#e15759','#f28e2b','#4e79a7','#045718ff'];
+
+        // Buat dataset untuk masing-masing skala usaha
+        var datasets = skalaList.map((skala, idx) => {
+            return {
+                label: skala,
+                data: labels.map(label => {
+                    var [q, t] = label.split(" - ");
+                    var tahun = t;
+                    var triwulan = q.replace("Q", "");
+                    var found = triwulanData.find(item => 
+                        item.tahun == tahun &&
+                        item.triwulan == triwulan &&
+                        item.skala_usaha == skala
+                    );
+                    return found ? found.total : 0;
+                }),
+                backgroundColor: colors[idx % colors.length],
+                stack: 'Stack 0 '
+            }
+        });
+
+        // Hitung total per tahun
+        var totalPerTahun = {};
+        triwulanData.forEach(item => {
+            if (!totalPerTahun[item.tahun]) {
+                totalPerTahun[item.tahun] = 0;
+            }
+            totalPerTahun[item.tahun] += item.total;
+        });
+
+        // Data line chart: mapping total tahunan hanya muncul di Q4
+        var dataTahunan = labels.map(label => {
+            if (label.startsWith('Q4')) {
+                var tahun = label.split(' - ')[1];
+                var found = tahunanData.find(item => item.tahun == tahun);
+                return found ? found.total : null;
+            } else {
+                return null;
+            }
+        });
+
+        datasets.push({
+            type: 'line',
+            label: 'Tahun',
+            data: dataTahunan,
+            borderColor: 'grey',
+            tension: 0.2,
+            pointBackgroundColor: 'grey',
+            pointRadius: 5,
+            spanGaps: true,
+            fill: false
+        });
+
+        // Render Chart
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Pertumbuhan Industri per Triwulan berdasarkan Skala Usaha'
+                    },
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
 @endsection

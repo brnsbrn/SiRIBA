@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             InvestasiSeeder::class,
             TenagaKerjaSeeder::class,
             KapasitasProduksiSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

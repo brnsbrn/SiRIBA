@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
         // Siapkan data untuk chart
         $kecamatan = ['Balikpapan Selatan', 'Balikpapan Kota', 'Balikpapan Timur', 'Balikpapan Utara', 'Balikpapan Tengah', 'Balikpapan Barat'];
-        $jenisUsaha = ['perseorangan', 'PT', 'CV'];
+        $jenisUsaha = ['perseorangan', 'PT', 'CV', 'PT Perseorangan', 'Badan Hukum Lainnya', 'Badan Layanan Umum', 'Koperasi', 'Persekutuan dan Perkumpulan', 'Perusahaan Umum', 'Yayasan'];
 
         $chartData = [];
         foreach ($kecamatan as $kec) {
@@ -81,6 +81,13 @@ class DashboardController extends Controller
         $perseorangan = PelakuUsaha::where('jenis_badan_usaha', 'perseorangan')->count();
         $pt = PelakuUsaha::where('jenis_badan_usaha', 'PT')->count();
         $cv = PelakuUsaha::where('jenis_badan_usaha', 'CV')->count();
+        $ptPerseorangan = PelakuUsaha::where('jenis_badan_usaha', 'PT Perseorangan')->count();
+        $bhl = PelakuUsaha::where('jenis_badan_usaha', 'Badan Hukum Lainnya')->count();
+        $blu = PelakuUsaha::where('jenis_badan_usaha', 'Badan Layanan Umum')->count();
+        $koperasi = PelakuUsaha::where('jenis_badan_usaha', 'Koperasi')->count();
+        $pdp = PelakuUsaha::where('jenis_badan_usaha', 'Persekutuan dan Perkumpulan')->count();
+        $perum = PelakuUsaha::where('jenis_badan_usaha', 'Perusahaan Umum')->count();
+        $yayasan = PelakuUsaha::where('jenis_badan_usaha', 'Yayasan')->count();
 
         // Hitung Tenaga Kerja
         $tenagalk = TenagaKerja::sum('jumlah_tki_laki_laki');
@@ -100,6 +107,21 @@ class DashboardController extends Controller
         ->groupBy('jenis_badan_usaha')
         ->pluck('total_investasi', 'jenis_badan_usaha');
 
+        // Hitung pertumbuhan industri per triwulan
+        $triwulanData = DB::table('pelaku_usaha')
+        ->selectRaw("YEAR(tanggal_permohonan) as tahun, QUARTER(tanggal_permohonan) as triwulan, skala_usaha, COUNT(*) as total")
+        ->groupBy(DB::raw("YEAR(tanggal_permohonan), QUARTER(tanggal_permohonan), skala_usaha"))
+        ->orderBy('tahun')
+        ->orderBy('triwulan')
+        ->get();
+
+        // Hitung total pertumbuhan per tahun
+        $tahunanData = DB::table('pelaku_usaha')
+        ->selectRaw("YEAR(tanggal_permohonan) as tahun, COUNT(*) as total")
+        ->groupBy(DB::raw("YEAR(tanggal_permohonan)"))
+        ->orderBy('tahun')
+        ->get();
+
         return view('dashboard', compact(
             'kecamatan',
             'chartData',
@@ -117,12 +139,25 @@ class DashboardController extends Controller
             'perseorangan',
             'pt',
             'cv',
+            'ptPerseorangan',
+            'bhl',
+            'blu',
+            'koperasi',
+            'pdp',
+            'perum',
+            'yayasan',
             'tenagaKerjaChartData',
             'tenagalk',
             'tenagapr',
             'tenagaasing',
             'totalInvestasi',
-            'totalInvestmentsByType'
+            'totalInvestmentsByType',
+            'triwulanData',
+            'tahunanData'
         ));
+    }
+    public function mapindustri()
+    {
+        return view();
     }
 }

@@ -11808,11 +11808,11 @@
         longDateFormat: {
             LT: 'HH:mm',
             LTS: 'HH:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY年M月D日',
             LLL: 'YYYY年M月D日 HH:mm',
             LLLL: 'YYYY年M月D日 dddd HH:mm',
-            l: 'YYYY/MM/DD',
+            l: 'DD/MM/YYYY',
             ll: 'YYYY年M月D日',
             lll: 'YYYY年M月D日 HH:mm',
             llll: 'YYYY年M月D日(ddd) HH:mm',
@@ -15209,7 +15209,7 @@
         longDateFormat: {
             LT: 'a h:mm',
             LTS: 'a h:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY MMMM D',
             LLL: 'YYYY MMMM D, a h:mm',
             LLLL: 'YYYY MMMM D [වැනි] dddd, a h:mm:ss',
@@ -17691,7 +17691,7 @@
         longDateFormat: {
             LT: 'HH:mm',
             LTS: 'HH:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY年M月D日',
             LLL: 'YYYY年M月D日Ah点mm分',
             LLLL: 'YYYY年M月D日ddddAh点mm分',
@@ -17806,7 +17806,7 @@
         longDateFormat: {
             LT: 'HH:mm',
             LTS: 'HH:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY年M月D日',
             LLL: 'YYYY年M月D日 HH:mm',
             LLLL: 'YYYY年M月D日dddd HH:mm',
@@ -17996,7 +17996,7 @@
         longDateFormat: {
             LT: 'HH:mm',
             LTS: 'HH:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY年M月D日',
             LLL: 'YYYY年M月D日 HH:mm',
             LLLL: 'YYYY年M月D日dddd HH:mm',

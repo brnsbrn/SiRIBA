@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Data Tenaga Kerja')
+@section('title', 'SIIBA | Data Tenaga Kerja')
 
 @section('content')
 <section class="content-header">
@@ -75,18 +75,6 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Tenaga Kerja Perempuan</th>
-                                    <th>Tenaga Kerja Laki-Laki</th>
-                                    <th>Tenaga Kerja Asing</th>
-                                    <th>Total Tenaga Kerja</th>
-                                    <th>KBLI</th>
-                                    <th>Jenis KBLI</th>
-                                    <th>Alamat</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

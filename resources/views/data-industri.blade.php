@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Data Industri')
+@section('title', 'SIIBA | Data Industri')
 
 @section('content')
     <section class="content-header">
@@ -50,6 +50,19 @@
                                 <option value="jenis_proyek">Jenis Proyek</option>
                                 <option value="kecamatan">Kecamatan</option>
                                 <option value="kelurahan">Kelurahan</option>
+                                <option value="jumlah_tki_laki_laki">Tenaga Kerja Laki-laki</option>
+                                <option value="jumlah_tki_perempuan">Tenaga Kerja Perempuan</option>
+                                <option value="jumlah_tenaga_kerja_asing">Tenaga Kerja Asing</option>
+                                <option value="total">Total Tenaga Kerja</option>
+                                <option value="modal_usaha">Modal Usaha</option>
+                                <option value="investasi_mesin">Investasi Mesin</option>
+                                <option value="investasi_lainnya">Investasi Lainnya</option>
+                                <option value="total_investasi">Total Investasi</option>
+                                <option value="nama_produk">Nama Produk</option>
+                                <option value="kapasitas">Kapasitas</option>
+                                <option value="satuan">Satuan</option>
+                                <option value="status_siinas">Status Akun Siinas</option>
+                                <option value="tanggal_registrasi_siinas">Tanggal Registrasi Siinas</option>
                             </select>
                         </div>
                         <div class="form-group mr-2">
@@ -83,14 +96,14 @@
                                     </a>
                                 </div>
                             </div>
-                            <table id="example1" class="table table-bordered table-striped display responsive nowrap">
+                            <table id="example1" class="table table-bordered table-striped table-sm compact display responsive nowrap">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
                                         <th>NIB</th>
                                         <th>Jenis Badan Usaha</th>
-                                        <th>ID KBLI</th>
                                         <th>KBLI</th>
+                                        <th>Jenis KBLI</th>
                                         <th>Skala Usaha</th>
                                         <th>Risiko Usaha</th>
                                         <th>Tanggal Permohonan</th>
@@ -100,6 +113,19 @@
                                         <th>Alamat</th>
                                         <th>Kecamatan</th>
                                         <th>Kelurahan</th>
+                                        <th>Jumlah TKI Laki-laki</th>
+                                        <th>Jumlah TKI Perempuan</th>
+                                        <th>Jumlah Tenaga Kerja Asing</th>
+                                        <th>Total Tenaga Kerja</th>
+                                        <th>Modal Usaha</th>
+                                        <th>Investasi Mesin</th>
+                                        <th>Investasi Lainnya</th>
+                                        <th>Total Investasi</th>
+                                        <th>Nama Produk</th>
+                                        <th>Kapasitas</th>
+                                        <th>Satuan</th>
+                                        <th>Status SIINAS</th>
+                                        <th>Tanggal Registrasi SIINAS</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -113,14 +139,38 @@
                                             <td>{{ optional($usaha->kbli)->jenis_kbli }}</td>
                                             <td>{{ $usaha->skala_usaha }}</td>
                                             <td>{{ $usaha->risiko }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($usaha->tanggal_permohonan)->format('d-m-Y') }}
-                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($usaha->tanggal_permohonan)->format('Y-m-d') }}</td>
                                             <td>{{ $usaha->jenis_proyek }}</td>
                                             <td>{{ $usaha->email }}</td>
                                             <td>{{ $usaha->no_telp }}</td>
                                             <td>{{ $usaha->alamat->alamat_usaha }}</td>
                                             <td>{{ $usaha->alamat->kecamatan }}</td>
                                             <td>{{ $usaha->alamat->kelurahan }}</td>
+                                            <td>{{ $usaha->tenagaKerja->jumlah_tki_perempuan }}</td>
+                                            <td>{{ $usaha->tenagaKerja->jumlah_tki_laki_laki }}</td>
+                                            <td>{{ $usaha->tenagaKerja->jumlah_tenaga_kerja_asing }}</td>
+                                            <td>{{ $usaha->tenagaKerja->jumlah_tki_perempuan + $usaha->tenagaKerja->jumlah_tki_laki_laki + $usaha->tenagaKerja->jumlah_tenaga_kerja_asing }}</td>
+                                            <td>{{ $usaha->investasi->modal_usaha }}</td>
+                                            <td>{{ $usaha->investasi->investasi_mesin }}</td>
+                                            <td>{{ $usaha->investasi->investasi_lainnya }}</td>
+                                            <td>{{ $usaha->investasi->modal_usaha + $usaha->investasi->investasi_mesin + $usaha->investasi->investasi_lainnya }}</td>
+                                            <td>
+                                                @foreach($usaha->kapasitasProduksi as $produksi)
+                                                    <div>{{ $produksi->nama_produk ?? '-' }}</div>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach($usaha->kapasitasProduksi as $produksi)
+                                                    <div>{{ $produksi->kapasitas ?? '-' }}</div>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach($usaha->kapasitasProduksi as $produksi)
+                                                    <div>{{ $produksi->satuan ?? '-' }}</div>
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $usaha->status_siinas }}</td>
+                                            <td>{{ $usaha->tanggal_registrasi_siinas }}</td>
                                             <td>
                                                 <a href="{{ route('data-industri.edit', $usaha->id_usaha) }}"
                                                     class="btn btn-warning btn-sm">Edit</a>
@@ -130,25 +180,6 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>NIB</th>
-                                        <th>Jenis Badan Usaha</th>
-                                        <th>ID KBLI</th>
-                                        <th>KBLI</th>
-                                        <th>Skala Usaha</th>
-                                        <th>Risiko Usaha</th>
-                                        <th>Tanggal Permohonan</th>
-                                        <th>Jenis Proyek</th>
-                                        <th>Email</th>
-                                        <th>No Telp</th>
-                                        <th>Alamat</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kelurahan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -160,59 +191,42 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable({
-                responsive: true,
+                responsive: false,
+                scrollX: true
                 columnDefs: [{
-                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     className: 'dt-head-center'
                 }],
-                columns: [{
-                        data: "nama"
-                    },
-                    {
-                        data: "NIB"
-                    },
-                    {
-                        data: "jenis_badan_usaha"
-                    },
-                    {
-                        data: "id_kbli"
-                    },
-                    {
-                        data: "kbli.jenis_kbli"
-                    },
-                    {
-                        data: "skala_usaha"
-                    },
-                    {
-                        data: "risiko"
-                    },
-                    {
-                        data: "tanggal_permohonan",
-                        render: function(data, type, row) {
-                            return moment(data).format('DD-MM-YYYY');
-                        }
-                    },
-                    {
-                        data: "jenis_proyek"
-                    },
-                    {
-                        data: "email"
-                    },
-                    {
-                        data: "no_telp"
-                    },
-                    {
-                        data: "alamat.alamat_usaha"
-                    },
-                    {
-                        data: "alamat.kecamatan"
-                    },
-                    {
-                        data: "alamat.kelurahan"
-                    },
-                    {
-                        data: "aksi"
-                    }
+                columns: [
+                    {data: "nama"},
+                    {data: "NIB"},
+                    {data: "jenis_badan_usaha"},
+                    {data: "id_kbli"},
+                    {data: "kbli.jenis_kbli"},
+                    {data: "kbli.kode_kbli"},
+                    {data: "skala_usaha"},
+                    {data: "risiko"},
+                    {data: "tanggal_permohonan", render: function(data, type, row) {return moment(data).format('YYYY-MM-DD');}},
+                    {data: "jenis_proyek"},
+                    {data: "email"},
+                    {data: "no_telp"},
+                    {data: "alamat.alamat_usaha"},
+                    {data: "alamat.kecamatan"},
+                    {data: "alamat.kelurahan"},
+                    {data: "tenagaKerja.jumlah_tki_laki_laki"},
+                    {data: "tenagaKerja.jumlah_tki_perempuan"},
+                    {data: "tenagaKerja.jumlah_tenaga_kerja_asing"},
+                    {data: "total_tenaga_kerja"},
+                    {data: "investasi.modal_usaha"},
+                    {data: "investasi.investasi_mesin"},
+                    {data: "investasi.investasi_lainnya"},
+                    {data: "total_investasi"},
+                    {data: "produk.nama_produk"},
+                    {data: "produk.kapasitas"},
+                    {data: "produk.satuan"},
+                    {data: "status_siinas"},
+                    {data: "tanggal_registrasi_siinas"},
+                    {data: "aksi"}
                 ]
             });
         });
@@ -264,10 +278,10 @@
             const enumValue = document.getElementById('enum_value');
 
             const enumOptions = {
-                'jenis_badan_usaha': ['Perseorangan', 'PT', 'CV'],
+                'jenis_badan_usaha': ['Perseorangan', 'PT', 'CV', 'PT Perseorangan', 'Badan Hukum Lainnya', 'Badan Layanan Umum', 'Koperasi', 'Persekutuan dan Perkumpulan', 'Perusahaan Umum', 'Yayasan'],
                 'skala_usaha': ['Mikro', 'Kecil', 'Menengah', 'Besar'],
                 'risiko': ['Rendah', 'Menengah Rendah', 'Menengah Tinggi', 'Tinggi'],
-                'jenis_proyek': ['Utama', 'Pendukung'],
+                'jenis_proyek': ['Utama', 'Pendukung','Perluasan'],
                 'kecamatan': ['Balikpapan Selatan', 'Balikpapan Kota', 'Balikpapan Timur', 'Balikpapan Utara',
                     'Balikpapan Tengah', 'Balikpapan Barat'
                 ],

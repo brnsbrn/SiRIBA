@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Edit Data Industri')
+@section('title', 'SIIBA | Edit Data Industri')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url('/siriba/data-industri') }}">Data Industri</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/siiba/data-industri') }}">Data Industri</a></li>
                         <li class="breadcrumb-item active">Edit Data Industri</li>
                     </ol>
                 </div>
@@ -56,6 +56,20 @@
                                         PT</option>
                                     <option value="CV" {{ $pelakuUsaha->jenis_badan_usaha == 'CV' ? 'selected' : '' }}>
                                         CV</option>
+                                    <option value="PT Perseorangan" {{ $pelakuUsaha->jenis_badan_usaha == 'PT Perseorangan' ? 'selected' : '' }}>
+                                        PT Perseorangan</option>
+                                    <option value="Badan Hukum Lainnya" {{ $pelakuUsaha->jenis_badan_usaha == 'Badan Hukum Lainnya' ? 'selected' : '' }}>
+                                        Badan Hukum Lainnya</option>
+                                    <option value="Badan Layanan Umum" {{ $pelakuUsaha->jenis_badan_usaha == 'Badan Layanan Umum' ? 'selected' : '' }}>
+                                        Badan Layanan Umum</option>
+                                    <option value="Koperasi" {{ $pelakuUsaha->jenis_badan_usaha == 'Koperasi' ? 'selected' : '' }}>
+                                        Koperasi</option>
+                                    <option value="Persekutuan dan Perkumpulan" {{ $pelakuUsaha->jenis_badan_usaha == 'Persekutuan dan Perkumpulan' ? 'selected' : '' }}>
+                                        Persekutuan dan Perkumpulan</option>
+                                    <option value="Perusahaan Umum" {{ $pelakuUsaha->jenis_badan_usaha == 'Perusahaan Umum' ? 'selected' : '' }}>
+                                        Perusahaan Umum</option>
+                                    <option value="Yayasan" {{ $pelakuUsaha->jenis_badan_usaha == 'Yayasan' ? 'selected' : '' }}>
+                                        Yayasan</option>
                                 </select>
                             </div>
                             <!-- Skala Usaha -->
@@ -96,6 +110,9 @@
                                         Utama</option>
                                     <option value="Pendukung"
                                         {{ $pelakuUsaha->jenis_proyek == 'Pendukung' ? 'selected' : '' }}>Pendukung
+                                    </option>
+                                    <option value="Perluasan"
+                                        {{ $pelakuUsaha->jenis_proyek == 'Perluasan' ? 'selected' : '' }}>Perluasan
                                     </option>
                                 </select>
                             </div>
@@ -199,7 +216,7 @@
                                 <div class="form-group">
                                     <label for="modal_usaha">Modal Usaha</label>
                                     <input type="number" class="form-control" id="modal_usaha" name="modal_usaha"
-                                        step="0.01" value="{{ $pelakuUsaha->investasi->modal_usaha }}" required>
+                                        step="0" value="{{ $pelakuUsaha->investasi->modal_usaha }}" required>
                                 </div>
                                 <!-- Investasi Mesin -->
                                 <div class="form-group">
@@ -399,7 +416,7 @@
                                     text: response.message,
                                 }).then(() => {
                                     window.location.href =
-                                        "{{ url('/siriba/data-industri') }}";
+                                        "{{ url('/siiba/data-industri') }}";
                                 });
                             } else if (response.status === 'error') {
                                 Swal.fire({

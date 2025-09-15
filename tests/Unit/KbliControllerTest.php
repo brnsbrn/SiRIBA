@@ -14,23 +14,64 @@ class KbliControllerTest extends TestCase
     #[Test]
     public function it_can_store_kbli_data()
     {
-        // Arrange: Persiapkan data input yang akan digunakan untuk tes
         $data = [
             'id_kbli' => ['12345'],
             'jenis_kbli' => ['Industri Makanan'],
         ];
 
-        // Act: Lakukan POST request ke route storekbli
         $response = $this->post(route('data-kbli.store'), $data);
 
-        // Assert: Periksa apakah data berhasil disimpan ke database
-        $response->assertStatus(200); // Pastikan request berhasil
-        $response->assertJson(['success' => 'Data berhasil disimpan.']); // Pastikan pesan sukses muncul
+        $response->assertStatus(200);
+        $response->assertJson(['success' => 'Data berhasil disimpan.']);
 
-        // Verifikasi bahwa data tersebut ada di database
         $this->assertDatabaseHas('kbli', [
             'id_kbli' => '12345',
             'jenis_kbli' => 'Industri Makanan',
         ]);
     }
+
+    #[Test]
+    public function it_can_display_edit_kbli_page()
+    {
+        $kbli = Kbli::factory()->create();
+        $response = $this->get(route('data-kbli.edit', $kbli->id_kbli));
+        $response->assertStatus(200);
+        $response->assertViewHas('kbli', $kbli);
+    }
+
+    #[Test]
+    public function it_can_update_kbli_data()
+    {
+        $kbli = Kbli::factory()->create();
+        $data = [
+            'id_kbli' => '54321',
+            'jenis_kbli' => 'Industri Minuman',
+        ];
+
+        $response = $this->put(route('data-kbli.update', $kbli->id_kbli), $data);
+
+        $response->assertStatus(200);
+        $response->assertJson(['success' => 'Data berhasil diperbarui.']);
+
+        $this->assertDatabaseHas('kbli', [
+            'id_kbli' => '54321',
+            'jenis_kbli' => 'Industri Minuman',
+        ]);
+    }
+
+    #[Test]
+    public function it_can_delete_kbli_data()
+    {
+        $kbli = Kbli::factory()->create();
+        $response = $this->delete(route('data-kbli.delete', $kbli->id_kbli));
+
+        $response->assertStatus(302);
+        $response->assertSessionHas('success', 'Data berhasil dihapus.');
+
+        $this->assertDatabaseMissing('kbli', [
+            'id_kbli' => $kbli->id_kbli,
+        ]);
+    }
 }
+
+
