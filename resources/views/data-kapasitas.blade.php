@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Data Kapasitas Produksi')
+@section('title', 'SIIBA | Data Kapasitas Produksi')
 
 @section('content')
 <section class="content-header">
@@ -77,18 +77,6 @@
                                     @endforeach
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nama Pelaku Usaha</th>
-                                    <th>NIB</th>
-                                    <th>KBLI</th>
-                                    <th>Jenis KBLI</th>
-                                    <th>Nama Produk</th>
-                                    <th>Kapasitas</th>
-                                    <th>Satuan</th>
-                                    <th>ID KBLI Produk</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

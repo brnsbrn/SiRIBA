@@ -7,8 +7,15 @@
     <title>@yield('title', 'AdminLTE 3 | Dashboard')</title>
 
     <!-- Google Font: Source Sans Pro -->
+    <!-- <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> -->
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">
+    <style>
+    body, .content-wrapper, .sidebar, .navbar, .main-footer {
+        font-family: 'Open Sans', sans-serif !important;
+    }
+    </style>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('lte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Ionicons -->
@@ -39,6 +46,18 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    <style>
+    .main-footer {
+        display: none !important;
+    }
+
+    .content-wrapper {
+        min-height: 100vh;
+        background-color: white !important;
+    }
+    </style>
+
+    @yield('css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -70,6 +89,13 @@
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
+                <!-- Logout Button -->
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="POST" class="form-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -79,7 +105,7 @@
             <!-- Brand Logo -->
             <a href="{{ url('home') }}" class="brand-link">
                 <img src="{{ asset('images/pemkotbpp.png') }}" alt="BPP Logo" class="brand-image" style="opacity: .8">
-                <span class="brand-text fw-bolder">SiRIBA</span>
+                <span class="brand-text fw-bolder">SIIBA</span>
             </a>
 
             <!-- Sidebar -->
@@ -90,7 +116,7 @@
                         <i class="bi bi-person-circle text-white" style="font-size: 2rem;"></i>
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block text-white">User</a>
+                        <a class="d-block text-white">TSDI DKUMKMP</a>
                     </div>
                 </div>
 
@@ -145,6 +171,14 @@
                                 <i class="nav-icon fas fa-code"></i>
                                 <p>
                                     KBLI
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('data-pertumbuhan') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    Pertumbuhan
                                 </p>
                             </a>
                         </li>
@@ -229,19 +263,46 @@
     <script>
         $(function() {
             $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
+                "responsive": false,
+                "scrollX": true,
+                "lengthChange": true,
+                "pageLength": 10,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        exportOptions: { columns: ':visible:not(:last-child)' }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: { columns: ':visible:not(:last-child)' }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: { columns: ':visible:not(:last-child)' }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: { columns: ':visible:not(:last-child)' }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: { columns: ':visible:not(:last-child)' }
+                    },
+                    'colvis'
+                ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
-                "lengthChange": false,
+                "lengthChange": true,
+                "pageLength": 10,
                 "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "responsive": true,
+                "responsive": false,
+                "scrollX": true,
             });
         });
     </script>

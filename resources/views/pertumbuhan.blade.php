@@ -1,18 +1,18 @@
 @extends('layout.main')
 
-@section('title', 'SIIBA | Data KBLI')
+@section('title', 'SIIBA | Pertumbuhan Kegiatan Industri')
 
 @section('content')
 <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Data KBLI Industri</h1>
+                    <h1>Pertumbuhan Kegiatan Industri</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active">Data KBLI</li>
+                        <li class="breadcrumb-item active">Pertumbuhan Kegiatan Industri</li>
                     </ol>
                 </div>
             </div>
@@ -38,14 +38,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Daftar KBLI Industri</h3>
+                            <h3 class="card-title">Pertumbuhan Kegiatan Industri</h3>
                         </div>
 
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-12">
-                                    <a href="{{ route('data-kbli.input') }}" class="btn btn-primary">Tambah Data</a>
-                                    <a href="{{ route('data-kbli') }}" class="btn btn-info ml-1">
+                                    <a href="{{ route('data-pertumbuhan.input') }}" class="btn btn-primary">Tambah Data</a>
+                                    <a href="{{ route('data-pertumbuhan') }}" class="btn btn-info ml-1">
                                         <img src="{{ asset('images/refresh.png') }}" alt="Refresh Icon"
                                             style="width: 21px; height: 21px; padding: 1px;"> Muat Ulang
                                     </a>
@@ -54,21 +54,23 @@
                             <table id="example1" class="table table-bordered table-striped display responsive nowrap">
                                 <thead>
                                     <tr>
-                                        <th>KBLI</th>
-                                        <th>Jenis KBLI</th>
+                                        <th>Periode</th>
+                                        <th>Jenis Data</th>
+                                        <th>Total</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($kbli_industri as $kbli)
+                                    @foreach ($pertumbuhan as $item)
                                         <tr>
-                                            <td>{{ $kbli->id_kbli }}</td>
-                                            <td>{{ $kbli->jenis_kbli }}</td>
+                                            <td>{{ $item->periode }}</td>
+                                            <td>{{ $item->jenis_data }}</td>
+                                            <td>{{ $item->total}}</td>
                                             <td>
-                                                <a href="{{ Route('data-kbli.edit', $kbli->id_kbli) }}"
+                                                <a href="{{ Route('data-pertumbuhan.edit', $item->id_pertumbuhan) }}"
                                                     class="btn btn-warning btn-sm">Edit</a>
                                                 <button class="btn btn-danger btn-sm"
-                                                    onclick="confirmDelete('{{ route('data-kbli.delete', $kbli->id_kbli) }}')">Hapus</button>
+                                                    onclick="confirmDelete('{{ route('data-pertumbuhan.delete', $item->id_pertumbuhan) }}')">Hapus</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -86,18 +88,14 @@
             $('#example1').DataTable({
                 responsive: true,
                 columnDefs: [{
-                    targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                    targets: [0, 1, 2, 3, 4],
                     className: 'dt-head-center'
                 }],
-                columns: [{
-                        data: "id_kbli"
-                    },
-                    {
-                        data: "jenis_kbli"
-                    },
-                    {
-                        data: "aksi"
-                    }
+                columns: [
+                    {data: "id_pertumbuhan"},
+                    {data: "jenis_data"},
+                    {data: "periode"},
+                    {data: "total"}
                 ]
             });
         });

@@ -10,7 +10,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url('/siriba/data-industri') }}">Data Industri</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/siiba/data-industri') }}">Data Industri</a></li>
                         <li class="breadcrumb-item active">Tambah Data Industri</li>
                     </ol>
                 </div>
@@ -47,6 +47,13 @@
                                     <option value="perseorangan">Perseorangan</option>
                                     <option value="PT">PT</option>
                                     <option value="CV">CV</option>
+                                    <option value="PT Perseorangan">PT Perseorangan</option>
+                                    <option value="Badan Hukum Lainnya">Badan Hukum Lainnya</option>
+                                    <option value="Badan Layanan Umum">Badan Layanan Umum</option>
+                                    <option value="Koperasi">Koperasi</option>
+                                    <option value="Persekutuan dan Perkumpulan">Persekutuan dan Perkumpulan</option>
+                                    <option value="Perusahaan Umum">Perusahaan Umum</option>
+                                    <option value="Yayasan">Yayasan</option>
                                 </select>
                             </div>
                             <!-- Skala Usaha -->
@@ -75,6 +82,7 @@
                                 <select class="form-control" id="jenis_proyek" name="jenis_proyek" required>
                                     <option value="Utama">Utama</option>
                                     <option value="Pendukung">Pendukung</option>
+                                    <option value="Perluasan">Perluasan</option>
                                 </select>
                             </div>
                             <!-- Tanggal Permohonan -->
@@ -167,13 +175,13 @@
                                 <div class="form-group">
                                     <label for="modal_usaha">Modal Usaha</label>
                                     <input type="number" class="form-control" id="modal_usaha" name="modal_usaha"
-                                        step="0.01" required>
+                                        step="0" required>
                                 </div>
                                 <!-- Investasi Mesin -->
                                 <div class="form-group">
                                     <label for="investasi_mesin">Investasi Mesin</label>
                                     <input type="number" class="form-control" id="investasi_mesin"
-                                        name="investasi_mesin" step="0.01" required>
+                                        name="investasi_mesin" required>
                                 </div>
                                 <!-- Investasi Lainnya -->
                                 <div class="form-group">
@@ -216,6 +224,18 @@
                                             <input type="text" class="form-control" id="satuan" name="satuan[]"
                                                 required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="status_siinas">Status Akun Siinas</label>
+                                            <select class="form-control" id="status_siinas" name="status_siinas" required>
+                                                <option value="Terdaftar">Terdaftar</option>
+                                                <option value="Tidak Terdaftar">Tidak Terdaftar</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tanggal_registrasi_siinas">Tanggal Registrasi Siinas</label>
+                                            <input type="date" class="form-control" id="tanggal_registrasi_siinas" name="tanggal_registrasi_siinas[]"
+                                                required>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-success mt-2" id="add-produk">Tambah
@@ -224,7 +244,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary ml-4">Simpan   </button>
+                            <button type="submit" class="btn btn-primary ml-4">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -299,7 +319,7 @@
                 kelurahanOptions.forEach(function(kelurahan) {
                     var option = document.createElement('option');
                     option.value = kelurahan;
-                    option.text = 'Kelurahan ' + kelurahan;
+                    option.text = kelurahan;
                     kelurahanSelect.appendChild(option);
                 });
             });
@@ -320,7 +340,7 @@
                                     title: 'Berhasil!',
                                     text: response.message,
                                 }).then(function() {
-                                    window.location.href = "{{ url('/siriba/data-industri') }}";
+                                    window.location.href = "{{ url('/siiba/data-industri') }}";
                                 });
                             }
                         },

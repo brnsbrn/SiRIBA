@@ -83,11 +83,11 @@
         longDateFormat: {
             LT: 'HH:mm',
             LTS: 'HH:mm:ss',
-            L: 'YYYY/MM/DD',
+            L: 'DD/MM/YYYY',
             LL: 'YYYY年M月D日',
             LLL: 'YYYY年M月D日 HH:mm',
             LLLL: 'YYYY年M月D日 dddd HH:mm',
-            l: 'YYYY/MM/DD',
+            l: 'DD/MM/YYYY',
             ll: 'YYYY年M月D日',
             lll: 'YYYY年M月D日 HH:mm',
             llll: 'YYYY年M月D日(ddd) HH:mm',

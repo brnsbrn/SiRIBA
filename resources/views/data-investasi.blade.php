@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'SiRIBA | Data Investasi')
+@section('title', 'SIIBA | Data Investasi')
 
 @section('content')
 <section class="content-header">
@@ -55,6 +55,7 @@
                                     <th>Modal Usaha</th>
                                     <th>Investasi Mesin</th>
                                     <th>Investasi Lainnya</th>
+                                    <th>Total Investasi</th>
                                     <th>KBLI</th>
                                     <th>Jenis KBLI</th>
                                     <th>Alamat</th>
@@ -67,23 +68,13 @@
                                         <td>{{ $usaha->investasi->modal_usaha }}</td>
                                         <td>{{ $usaha->investasi->investasi_mesin }}</td>
                                         <td>{{ $usaha->investasi->investasi_lainnya }}</td>
+                                        <td>{{ $usaha->investasi->modal_usaha + $usaha->investasi->investasi_mesin + $usaha->investasi->investasi_lainnya }}</td>
                                         <td>{{ $usaha->kbli->id_kbli }}</td>
                                         <td>{{ $usaha->kbli->jenis_kbli }}</td>
                                         <td>{{ $usaha->alamat->alamat_usaha }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Modal Usaha</th>
-                                    <th>Investasi Mesin</th>
-                                    <th>Investasi Lainnya</th>
-                                    <th>KBLI</th>
-                                    <th>Jenis KBLI</th>
-                                    <th>Alamat</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -105,6 +96,7 @@
                 { data: "modal_usaha" },
                 { data: "investasi_mesin" },
                 { data: "investasi_lainnya" },
+                { data: "total_investasi" },
                 { data: "id_kbli" },
                 { data: "jenis_kbli" },
                 { data: "alamat_usaha" }
