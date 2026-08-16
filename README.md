@@ -586,19 +586,7 @@ Berikut adalah beberapa tampilan SiRIBA yang menunjukkan fitur pengelolaan data 
 
 ## Halaman Utama dan Data Industri
 
-![SiRIBA - Dashboard](https://github.com/user-attachments/assets/99e3c2bb-6208-44cf-9b26-aa5587bf3bbf)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/01d76fbc-bdb1-4ee7-b600-391af997c817)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/45d6857b-7fc5-443a-b542-c1bc23640d1a)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/0717861b-ae25-4865-a29f-0a8d1e1ef556)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/65d77783-6b43-45f6-a9a6-619aace5ca0e)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/dce03ce7-9ad5-433c-b35f-d991f14fc363)
-
-![SiRIBA - Data Industri](https://github.com/user-attachments/assets/8ab59acf-2ddf-4d87-bfff-08e7b78211d3)
+<img width="1899" height="817" alt="image" src="https://github.com/user-attachments/assets/019508b3-057d-4991-a140-496727668dd7" /> <img width="1895" height="701" alt="image" src="https://github.com/user-attachments/assets/1d656a80-b4b6-445a-8430-321b28867aed" /> <img width="1900" height="933" alt="image" src="https://github.com/user-attachments/assets/0bf88f70-e723-49f7-938a-0f5a591cb8e8" /> <img width="1901" height="642" alt="image" src="https://github.com/user-attachments/assets/43c1a5fd-8459-4463-9a7d-46696b11a065" /> <img width="1898" height="616" alt="image" src="https://github.com/user-attachments/assets/f37248e1-35c7-4820-a393-1306ebfa5054" /> <img width="1906" height="929" alt="image" src="https://github.com/user-attachments/assets/40f7eb12-acd4-422e-b469-7819c3cdc53e" /> <img width="1892" height="642" alt="image" src="https://github.com/user-attachments/assets/5537449b-7385-415f-8ae5-31557e3b5a18" /> <img width="1897" height="930" alt="image" src="https://github.com/user-attachments/assets/86b41106-b2a3-4088-b779-061708125a25" />
 
 ## Modul Data Pendukung
 
